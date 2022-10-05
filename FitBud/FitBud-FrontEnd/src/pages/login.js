@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-
 import '../App.css';
 
 const Login = () => {
@@ -51,7 +49,7 @@ const Login = () => {
   // Generate JS code for error message
   const renderErrorMessage = (name) =>
     name === errorMessages.name && (
-      <div className="error">{errorMessages.message}</div>
+      <div  e="error">{errorMessages.message}</div>
     );
 
   // JS code for login form
@@ -69,7 +67,7 @@ const Login = () => {
           {renderErrorMessage("pass")}
         </div>
         <div className="button-container">
-          <input type="submit" />
+          <input type="submit" value="Login"/>
         </div>
       </form>
     </div>

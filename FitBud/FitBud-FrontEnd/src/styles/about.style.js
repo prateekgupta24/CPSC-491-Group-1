@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HomeStyle = styled.div`
+const AboutStyle = styled.div`
   background-color: #282c34;
   display: flex;
   flex-direction: column;
@@ -10,4 +10,4 @@ const HomeStyle = styled.div`
   padding: 10vh;
 `;
 
-export default HomeStyle;
+export default AboutStyle;

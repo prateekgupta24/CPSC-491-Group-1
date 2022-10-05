@@ -1,23 +1,46 @@
 import styled from 'styled-components';
-// import {Link} from 'react-router-dom';
 
-const Navbar = styled.nav`
+// need to split navbar to left and right
+// left will have home, right will have login and subscriptions
+
+const Nav = styled.nav`
+  position: sticky;
+  top: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  background-color: Gray;
-  padding: 20px;
+  flex-direction: row;
+  background: transparent;
+  background-color: aliceblue;
+  color: black;
+  overflow: hidden;
+  
+`;
+
+
+const Navleft = styled.div`
+  display: flex;
+  flex: 50%;
+  float: left;
+  padding: 5px;
+  
+  
+`;
+const Navright = styled.div`
+  display: flex;
+  flex: 50%;
+  justify-content: right;
+  padding: 5px;
 `;
 
 const Links = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  color: white;
+  margin: 10px;
+  justify-content: space-between;
+  color: black;
+
 `;
 
 export {
-  Navbar,
+  Nav,
+  Navleft,
+  Navright,
   Links,
 };
