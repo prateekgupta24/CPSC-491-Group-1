@@ -2,6 +2,7 @@ import React from 'react';
 import {HomeStyle, TitleStyle, AboutStyle, FaqStyle, ContactStyle,ListItems} from '../styles/home.style';
 import textData from '../resources/text.json';
 
+
 const Home = () => {
   return (
     <div>

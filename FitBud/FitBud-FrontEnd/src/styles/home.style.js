@@ -9,26 +9,28 @@ const HomeStyle = styled.div`
   min-height: 100vh;
   padding: 5vh;
   margin: 0;
+  margin-top: 60.5px;
 `;
 
 const TitleStyle = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
 const AboutStyle = styled.div`
-  white-space: pre-line;
-  vertical-align: bottom;
+  display: flex;
+  height: 100vh;
+  
 `;
 
 const ContactStyle = styled.div`
-
+  height: 100vh;
 `;
 
 const FaqStyle = styled.div`
-
+  height: 100vh;
 `;
 
 const ListItems = styled.li`
