@@ -1,0 +1,68 @@
+[
+{
+  "about":
+    {
+      "title": "About Us",
+      "description": "The FitBud team consists of 3 students from CSUF.",
+      "intro": {
+        "austin": [
+          "Austin Sohn's Bio:\n",
+          "I’ve taken C++, Python, and Java classes.  I’ve learned a bit of Node.js on my own time and ",
+          "am fairly new to HTTP/CSS. I’ve also taken a Web Back-End class at CSUF.\n\n",
+          "Project Experience:"
+        ],
+        "prateek": [
+          "Prateek Gupta Bio:\n",
+          "I have experience with C++,  Python, SQL. I have a solid foundation in building  databases and ",
+          "using SQL queries to retrieve data. I have a little experience with Angular JS.\n\n",
+          "Project Experience:"
+        ],
+        "jose": [
+          "Jose Arce Bio:\n",
+          "The programming languages I am skilled in are C++, Python, and Java. I have learned HTML, CSS, and JS with the knowledge of",
+          "frontend and a bit of backend. I’ve had little experience of retrieving data and creating a database.\n\n",
+          "Project Experience:"
+        ]
+      },
+      "bullet":{
+        "austin": ["Back-end for a twitter clone.",
+        "Created a GUI for the game called Nim that can play with an AI that was provided by the teacher.",
+        "A bot to monitor twitch chat and has basic functions."
+        ],
+        "prateek": [
+          "Built a social network for computer science professionals and students",
+          "Built a cloud storage application  accessible via an internet browser."
+        ],
+        "jose": [
+          "Created a website that gives the updated numbers of COVID cases since March 2020.",
+          "Created an app that converts currency that is necessary for the user.",
+          "Created a Space Invaders inspired video game with different weapons and color changing spaceships."
+        ]
+      }
+    },
+  "faq": 
+    {
+      "title": "FAQ",
+      "id": {
+        "q1": {
+          "q": "Who is this product for?",
+          "a": "This product is for anyone wanting to find a buddy to workout with."
+        },
+        "q2": {
+          "q": "How does this product work?",
+          "a": ["You match with someone depending on your workout preferences, chat with",
+          "them and find a place to workout, and have a great workout session with that buddy."]
+        }
+      }
+   },
+  "contact":
+  {
+    "title": "Contact Us",
+    "style": "Email:",
+    "emails": ["austinsohn@csu.fullerton.edu",
+    "josearce@csu.fullerton.edu",
+    "pgupta24@csu.fullerton.edu"]
+  }
+
+}
+]
