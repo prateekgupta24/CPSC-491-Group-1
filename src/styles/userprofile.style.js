@@ -2,18 +2,9 @@ import styled from "styled-components";
 
 const Profile = styled.div`
   background-color: #282c34;
-  color: white;
-  height: 100vh;
 `;
 
-const ProfileForm = styled.div`
-  background-color: whitesmoke;
-  color: black;
-  align-items: left;
-  padding: 2rem;
-  margin-left: 35vw;
-  width: 25vw;
-`;
+const ProfileForm = styled.form``;
 
 const ProfileTitle = styled.div`
   font-size: 40px;

@@ -1,15 +1,12 @@
 import React from "react";
-import {
-  SignupStyle,
-  SignupForm,
-  SignupTitle,
-  SignupInput,
-  SignupPass,
-} from "../styles/signup.style";
+import { SignupStyle, SignupForm, SignupTitle } from "../styles/signup.style";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button/";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -29,28 +26,42 @@ const Signup = () => {
       </IconButton>
       <SignupForm>
         <SignupTitle>Create your account</SignupTitle>
-        <div id="First-Name">
-          <label>First Name</label>
-          <SignupInput />
-        </div>
-        <div id="Last-Name">
-          <label>Last Name</label>
-          <SignupInput />
-        </div>
-        <div id="Email">
-          <label>Email</label>
-          <SignupInput />
-        </div>
-        <div id="Password">
-          <label>Password</label>
-          <SignupPass />
-        </div>
-        <Button
-          variant="contained"
-          style={{ marginBottom: "12px", marginTop: "-15px" }}
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
         >
-          Create account
-        </Button>
+          <div id="username">
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+              <TextField
+                required
+                id="outlined-username"
+                type="text"
+                label="Username"
+              />
+            </FormControl>
+          </div>
+          <div id="password">
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+              <TextField
+                required
+                id="outlined-password"
+                type="password"
+                label="Password"
+              />
+            </FormControl>
+          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ marginBottom: "12px" }}
+          >
+            Login
+          </Button>
+        </Box>
       </SignupForm>
     </SignupStyle>
   );

@@ -3,8 +3,6 @@ import {
   LoginStyle,
   LoginForm,
   LoginTitle,
-  LoginPass,
-  LoginEmail,
   LoginSign,
   LoginSignout,
   LoginSignup,
@@ -13,6 +11,9 @@ import {
 import { useNavigate, Link } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+
 import jwt_decode from "jwt-decode";
 import Button from "@mui/material/Button/";
 
@@ -45,11 +46,11 @@ const Login = () => {
     });
   }, [google_cid]);
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
     console.log(event.target.email.value); // send these to database
     //console.log(event.target.password.value);
-  }
+  };
 
   return (
     <LoginStyle>
@@ -65,22 +66,39 @@ const Login = () => {
         <ArrowBackIosIcon style={{}} />
       </IconButton>
       <LoginForm onSubmit={handleSubmit}>
-        <LoginTitle>Welcome</LoginTitle>
-        <div className="input-email">
-          <label>Email:</label>
-          <LoginEmail name="email" />
-        </div>
-        <div className="input-pass">
-          <label>Password:</label>
-          <LoginPass name="password" />
-        </div>
-        <Button
-          variant="contained"
-          style={{ marginBottom: "12px", marginTop: "-15px" }}
+        <LoginTitle>Create an account</LoginTitle>
+        <Box
+          component="LoginForm"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
         >
-          Login
-        </Button>
-
+          <div id="username">
+            <TextField
+              required
+              id="outlined-username"
+              type="text"
+              label="Username"
+            />
+          </div>
+          <div id="password">
+            <TextField
+              required
+              id="outlined-password"
+              type="password"
+              label="Password"
+            />
+          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ marginBottom: "12px" }}
+          >
+            Login
+          </Button>
+        </Box>
         <LoginSign>
           <LoginGoogle id="signInDiv"></LoginGoogle>
           {Object.keys(user).length !== 0 && (

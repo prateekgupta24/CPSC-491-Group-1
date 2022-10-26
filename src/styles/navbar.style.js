@@ -24,12 +24,12 @@ const Navleft = styled.div`
 const Navright = styled.div`
   display: flex;
   justify-content: right;
+  color: black;
   padding: 5px;
 `;
 
 const Links = styled.div`
   margin: 7px;
-
   color: black;
   text-decoration: none;
 `;

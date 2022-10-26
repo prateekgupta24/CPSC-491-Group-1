@@ -5,9 +5,6 @@ import {
   AboutStyle,
   FaqStyle,
   ContactStyle,
-  HomeEmail,
-  HomeSubject,
-  HomeInput,
   ListItems,
   HomeBackground,
   HomeRegister,
@@ -24,10 +21,13 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
 
 const Home = () => {
   const navigate = useNavigate();
-  function handleContact(event) {
+  function handleSubmit(event) {
     event.preventDefault();
     console.log("send email");
   }
@@ -117,18 +117,56 @@ const Home = () => {
                 </Accordion>
               </FaqStyle>
 
-              <ContactStyle id="contact" onSubmit={handleContact}>
-                <h1>Contact Us</h1>
-                Email: <HomeEmail />
-                Subject: <HomeSubject />
-                Message: <HomeInput />
-                <Button
-                  variant="contained"
-                  endIcon={<SendIcon />}
-                  style={{ width: "90px" }}
-                >
-                  Send
-                </Button>
+              <ContactStyle id="contact" onSubmit={handleSubmit}>
+                <Box>
+                  <div id="email">
+                    <FormControl
+                      sx={{ m: 1, width: "25ch" }}
+                      variant="outlined"
+                    >
+                      <TextField
+                        required
+                        id="outlined-email"
+                        type="text"
+                        label="Email"
+                      />
+                    </FormControl>
+                  </div>
+                  <div id="subject">
+                    <FormControl
+                      sx={{ m: 1, width: "25ch" }}
+                      variant="outlined"
+                    >
+                      <TextField
+                        required
+                        id="outlined-subject"
+                        type="text"
+                        label="Subject"
+                      />
+                    </FormControl>
+                  </div>
+                  <div id="message">
+                    <FormControl
+                      sx={{ m: 1, width: "25ch" }}
+                      variant="outlined"
+                    >
+                      <TextField
+                        id="outlined-multiline-static"
+                        label="Message"
+                        multiline
+                        rows={4}
+                      />
+                    </FormControl>
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    endIcon={<SendIcon />}
+                    style={{ width: "90px" }}
+                  >
+                    Send
+                  </Button>
+                </Box>
               </ContactStyle>
             </>
           );
