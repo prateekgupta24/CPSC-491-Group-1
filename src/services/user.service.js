@@ -30,4 +30,4 @@ class UserDataService {
   }
 }
 
-export default new TutorialDataService();
+export default new UserDataService();

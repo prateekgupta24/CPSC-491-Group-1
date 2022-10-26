@@ -14,7 +14,6 @@ const SignupForm = styled.form`
   margin-left: 20%;
   margin-right: 20%;
   background-color: whitesmoke;
-  padding: 2rem;
   min-width: 40vw;
 `;
 
@@ -23,20 +22,4 @@ const SignupTitle = styled.div`
   margin-bottom: 20px;
 `;
 
-const SignupInput = styled.input.attrs({ type: "text" })`
-  height: 25px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 5px;
-
-  margin-bottom: 25px;
-`;
-
-const SignupPass = styled.input.attrs({ type: "password" })`
-  height: 25px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 5px;
-
-  margin-bottom: 25px;
-`;
-
-export { SignupStyle, SignupForm, SignupTitle, SignupInput, SignupPass };
+export { SignupStyle, SignupForm, SignupTitle };
