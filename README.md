@@ -5,5 +5,10 @@
 
 # To start the Front-End
 
-- cd to FitBudTest
+- cd client
 - npm start
+
+# To start the Back-End
+
+- cd server
+- node server.js
