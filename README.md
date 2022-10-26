@@ -7,3 +7,7 @@
 
 - cd to FitBudTest
 - npm start
+
+# To start the Back-End
+- cd to server
+- node server.js
