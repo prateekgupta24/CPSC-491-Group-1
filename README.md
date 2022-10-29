@@ -5,7 +5,7 @@
 
 # To start the Front-End
 
-- cd to FitBudTest
+- cd to CPSC-491-Group-1
 - npm start
 
 # To start the Back-End
