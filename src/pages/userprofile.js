@@ -26,9 +26,13 @@ const UserProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const data = new FormData(event.target);
+    const value = Object.fromEntries(data.entries());
+    const jsonValue = JSON.stringify(value);
+    console.log(jsonValue);
     axios
-      .post("http://localhost:8080/users/userprofiles.create", {
-        body: JSON.stringify(event.target.value),
+      .post("http://localhost:8080/userCreate", {
+        body: jsonValue,
       })
       .then((response) => {
         console.log(response.data);
@@ -69,6 +73,7 @@ const UserProfile = () => {
                 id="outlined-fname"
                 type="text"
                 label="First Name"
+                name="fname"
               />
             </div>
             <div id="last-name">
@@ -77,6 +82,7 @@ const UserProfile = () => {
                 id="outlined-lname"
                 type="text"
                 label="Last Name"
+                name="lname"
               />
             </div>
             <div id="age">
