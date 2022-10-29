@@ -3,11 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081",
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
@@ -36,6 +32,12 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to fitbud application." });
 });
 
+app.post("/userCreate", async (req, res) => {
+  const user = req.body;
+  const newUser = db.userprofiles(user);
+  await newUser.save();
+  res.json(user);
+});
 require("./app/routes/user.routes")(app);
 
 // set port, listen for requests

@@ -1,10 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Nav, Navleft, Navright, Links } from "./styles/navbar.style.js";
 import Button from "@mui/material/Button/";
 
 const NavBar = () => {
-  const navigate = useNavigate();
   return (
     <Nav>
       <Navleft>
@@ -58,23 +57,26 @@ const NavBar = () => {
       </Navleft>
 
       <Navright>
-        <Button
-          onClick={() => {
-            navigate("/userprofile");
-          }}
-          variant="contained"
-          style={{ padding: "0px", margin: "5px" }}
-        >
-          <Links>Profile</Links>
+        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
+          <Link
+            style={{ color: "black", textDecoration: "none" }}
+            to="/userprofile"
+          >
+            <Links>Profile</Links>
+          </Link>
         </Button>
-        <Button
-          onClick={() => {
-            navigate("/login");
-          }}
-          variant="contained"
-          style={{ padding: "0px", margin: "5px" }}
-        >
-          <Links>Login</Links>
+        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
+          <Link
+            style={{ color: "black", textDecoration: "none" }}
+            to="/userpreferences"
+          >
+            <Links>Preferences</Links>
+          </Link>
+        </Button>
+        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
+          <Link style={{ color: "black", textDecoration: "none" }} to="/login">
+            <Links>SIGN IN</Links>
+          </Link>
         </Button>
       </Navright>
     </Nav>
