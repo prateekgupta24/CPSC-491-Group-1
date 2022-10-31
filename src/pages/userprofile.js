@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Profile, ProfileForm } from "../styles/userprofile.style";
 import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
@@ -13,6 +13,9 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import FormHelperText from "@mui/material/FormHelperText";
 import CssBaseline from "@mui/material/CssBaseline";
 import axios from "axios";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -26,14 +29,24 @@ const UserProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.target);
-    const value = Object.fromEntries(data.entries());
-    const jsonValue = JSON.stringify(value);
-    console.log(jsonValue);
+    // const data = new FormData(event.target);
+    // const value = Object.fromEntries(data.entries());
+    // const jsonValue = JSON.stringify(value);
+    // console.log(jsonValue);
+    const data = {
+      fname: event.target.fname.value,
+      lname: event.target.lname.value,
+      age: event.target.age.value,
+      gender: event.target.gender.value,
+      height:
+        event.target.heightft.value + "'" + event.target.heightin.value + '"',
+      weight: event.target.weight.value,
+      state: event.target.state.value,
+      city: event.target.city.value,
+      gym: event.target.gym.value,
+    };
     axios
-      .post("http://localhost:8080/userCreate", {
-        body: jsonValue,
-      })
+      .post("http://localhost:8080/userCreate", data)
       .then((response) => {
         console.log(response.data);
       })
@@ -41,6 +54,7 @@ const UserProfile = () => {
         console.log(error);
         return;
       });
+    navigate(-1);
   };
 
   return (
@@ -95,9 +109,24 @@ const UserProfile = () => {
                   shrink: true,
                 }}
                 variant="standard"
+                name="age"
               />
             </div>
-
+            <div id="gender">
+              <FormControl sx={{ m: 1, width: "12ch" }}>
+                <InputLabel id="gender-select-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-select-label"
+                  id="gender-select"
+                  label="Gender"
+                  name="gender"
+                >
+                  <MenuItem value={"male"}>Male</MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
+                  <MenuItem value={"other"}>Other</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <div id="height">
               <FormHelperText sx={{ m: 1 }} id="outlined-height-helper-text">
                 Height
@@ -112,6 +141,7 @@ const UserProfile = () => {
                   inputProps={{
                     "aria-label": "height-feet",
                   }}
+                  name="heightft"
                 />
               </FormControl>
               <FormControl sx={{ m: 1, width: "10ch" }}>
@@ -124,6 +154,7 @@ const UserProfile = () => {
                   inputProps={{
                     "aria-label": "height-inch",
                   }}
+                  name="heightin"
                 />
               </FormControl>
             </div>
@@ -136,22 +167,23 @@ const UserProfile = () => {
                 <OutlinedInput
                   id="outlined-adornment-weight"
                   endAdornment={
-                    <InputAdornment position="end">kg</InputAdornment>
+                    <InputAdornment position="end">lbs</InputAdornment>
                   }
                   aria-describedby="outlined-weight-helper-text"
                   inputProps={{
                     "aria-label": "weight",
                   }}
+                  name="weight"
                 />
               </div>
             </FormControl>
             <div id="location">
-              <TextField id="outlined-state" label="State" />
+              <TextField id="outlined-state" label="State" name="state" />
 
-              <TextField id="outlined-city" label="City" />
+              <TextField id="outlined-city" label="City" name="city" />
             </div>
             <div id="gym">
-              <TextField id="outlined-gym" type="text" label="Gym" />
+              <TextField id="outlined-gym" type="text" label="Gym" name="gym" />
             </div>
           </Box>
           <Button

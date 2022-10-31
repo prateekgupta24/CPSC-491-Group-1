@@ -1,13 +1,15 @@
 module.exports = (mongoose) => {
   const User = mongoose.model(
-    "User",
-    mongoose.Schema(
+    "users",
+    new mongoose.Schema(
       {
-        fName: String,
-        lName: String,
-        age: String,
+        fname: String,
+        lname: String,
+        age: Number,
         gender: String,
-        weight: String,
+        height: String,
+        weight: Number,
+        state: String,
         city: String,
         gym: String,
       },

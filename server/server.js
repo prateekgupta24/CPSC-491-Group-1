@@ -32,9 +32,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to fitbud application." });
 });
 
+// async create users
 app.post("/userCreate", async (req, res) => {
   const user = req.body;
-  const newUser = db.userprofiles(user);
+  const newUser = new db.userprofiles(user);
   await newUser.save();
   res.json(user);
 });
