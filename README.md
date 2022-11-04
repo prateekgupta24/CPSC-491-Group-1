@@ -9,5 +9,7 @@
 - npm start
 
 # To start the Back-End
+
 - cd to server
-- node server.js
+- nodemon server.js
+  - nodemon allows you to restart the server when saving the file

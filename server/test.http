@@ -1,0 +1,12 @@
+http://localhost:3000
+### Test Homepage
+GET http://localhost:3000/
+
+### Test Login
+POST http://localhost:8080/login
+Content-Type: 
+
+{
+  "email": "test@test.com",
+  "pword": "test"
+}

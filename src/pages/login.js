@@ -13,14 +13,16 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-
 import jwt_decode from "jwt-decode";
 import Button from "@mui/material/Button/";
+import axios from "axios";
 
 const Login = () => {
   // google sign in
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const [userEmail, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
   const google_cid = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
   function handleCallbackResponse(response) {
@@ -30,8 +32,11 @@ const Login = () => {
     document.getElementById("signInDiv").hidden = true;
   }
 
-  function handleSignOut(event) {
+  function handleSignOut() {
     setUser({});
+    setUserEmail("");
+    setPassword("");
+    localStorage.clear();
     document.getElementById("signInDiv").hidden = false;
   }
   useEffect(() => {
@@ -48,8 +53,23 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target.email.value); // send these to database
-    //console.log(event.target.password.value);
+    setUserEmail(event.target.email.value);
+    setPassword(event.target.password.value);
+    // check if email exists
+    const data = {
+      email: userEmail,
+      pword: password,
+    };
+    axios
+      .post("http://localhost:8080/login", data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
+    navigate(-1);
   };
 
   return (
@@ -75,12 +95,13 @@ const Login = () => {
           noValidate
           autoComplete="off"
         >
-          <div id="username">
+          <div id="email">
             <TextField
               required
-              id="outlined-username"
+              id="outlined-email"
               type="text"
-              label="Username"
+              label="Email Address"
+              name="email"
             />
           </div>
           <div id="password">
@@ -89,6 +110,7 @@ const Login = () => {
               id="outlined-password"
               type="password"
               label="Password"
+              name="password"
             />
           </div>
           <Button

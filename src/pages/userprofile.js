@@ -29,10 +29,7 @@ const UserProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const data = new FormData(event.target);
-    // const value = Object.fromEntries(data.entries());
-    // const jsonValue = JSON.stringify(value);
-    // console.log(jsonValue);
+    // somehow get email
     const data = {
       fname: event.target.fname.value,
       lname: event.target.lname.value,
