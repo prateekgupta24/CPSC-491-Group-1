@@ -4,7 +4,6 @@ import {
   LoginForm,
   LoginTitle,
   LoginSign,
-  LoginSignout,
   LoginSignup,
   LoginGoogle,
 } from "../styles/login.style";
@@ -23,12 +22,14 @@ const Login = () => {
   const [user, setUser] = useState({});
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const google_cid = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  // hide later maybe in env
+  const google_cid =
+    "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
 
   function handleCallbackResponse(response) {
     var userToken = jwt_decode(response.credential);
     console.log("JWT ID token: " + response.credential);
-    setUser(userToken);
+    setUserEmail(userToken);
     document.getElementById("signInDiv").hidden = true;
   }
 
@@ -38,6 +39,7 @@ const Login = () => {
     setPassword("");
     localStorage.clear();
     document.getElementById("signInDiv").hidden = false;
+    console.log(user); // delete later, just getting rid of stupid warning
   }
   useEffect(() => {
     /* global google */
@@ -55,7 +57,6 @@ const Login = () => {
     event.preventDefault();
     setUserEmail(event.target.email.value);
     setPassword(event.target.password.value);
-    // check if email exists
     const data = {
       email: userEmail,
       pword: password,
@@ -64,12 +65,15 @@ const Login = () => {
       .post("http://localhost:8080/login", data)
       .then((response) => {
         console.log(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
       })
       .catch((error) => {
         console.log(error);
         return;
       });
-    navigate(-1);
+    document.getElementById("signInDiv").hidden = true;
+    event.target.reset();
+    //navigate(-1);
   };
 
   return (
@@ -95,53 +99,68 @@ const Login = () => {
           noValidate
           autoComplete="off"
         >
-          <div id="email">
-            <TextField
-              required
-              id="outlined-email"
-              type="text"
-              label="Email Address"
-              name="email"
-            />
-          </div>
-          <div id="password">
-            <TextField
-              required
-              id="outlined-password"
-              type="password"
-              label="Password"
-              name="password"
-            />
-          </div>
-          <Button
-            type="submit"
-            variant="contained"
-            style={{ marginBottom: "12px" }}
-          >
-            Login
-          </Button>
-        </Box>
-        <LoginSign>
-          <LoginGoogle id="signInDiv"></LoginGoogle>
-          {Object.keys(user).length !== 0 && (
-            <LoginSignout onClick={(e) => handleSignOut(e)}>
-              Sign Out
-            </LoginSignout>
+          {Object.keys(userEmail).length === 0 && (
+            <>
+              <div id="email">
+                <TextField
+                  required
+                  id="outlined-email"
+                  type="text"
+                  label="Email Address"
+                  name="email"
+                />
+              </div>
+
+              <div id="password">
+                <TextField
+                  required
+                  id="outlined-password"
+                  type="password"
+                  label="Password"
+                  name="password"
+                />
+              </div>
+            </>
           )}
-          {user && (
+          {userEmail && (
             <div>
-              <img src={user.picture} alt="" />
-              <h2>{user.name}</h2>
+              <img src={userEmail.picture} alt="" />
+              <h2>{userEmail.name}</h2>
             </div>
           )}
-        </LoginSign>
-        <LoginSignup>
-          <text>Don't have a FitBud account?</text>
-          <Link style={{ color: "black" }} to="../signup">
-            {" "}
-            Sign up
-          </Link>
-        </LoginSignup>
+        </Box>
+        <Box component="span">
+          {Object.keys(userEmail).length === 0 && (
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ marginBottom: "12px" }}
+              id="login"
+            >
+              Login
+            </Button>
+          )}
+
+          <LoginSign>
+            <LoginGoogle id="signInDiv"></LoginGoogle>
+            {Object.keys(userEmail).length !== 0 && (
+              <Button
+                variant="contained"
+                style={{ marginBottom: "12px" }}
+                onClick={(e) => handleSignOut(e)}
+              >
+                Sign out
+              </Button>
+            )}
+          </LoginSign>
+          <LoginSignup>
+            <text>Don't have a FitBud account?</text>
+            <Link style={{ color: "black" }} to="../signup">
+              {" "}
+              Sign up
+            </Link>
+          </LoginSignup>
+        </Box>
       </LoginForm>
     </LoginStyle>
   );

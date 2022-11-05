@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SignupStyle, SignupForm, SignupTitle } from "../styles/signup.style";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -7,9 +7,33 @@ import Button from "@mui/material/Button/";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
+import axios from "axios";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setUserEmail(event.target.email.value);
+    setPassword(event.target.password.value);
+    // check if email exists
+    const data = {
+      email: userEmail,
+      pword: password,
+    };
+    axios
+      .post("http://localhost:8080/userCreate", data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
+    navigate(-1);
+  };
+
   return (
     <SignupStyle>
       <IconButton
@@ -24,23 +48,23 @@ const Signup = () => {
       >
         <ArrowBackIosIcon style={{}} />
       </IconButton>
-      <SignupForm>
+      <SignupForm onSubmit={handleSubmit}>
         <SignupTitle>Create your account</SignupTitle>
         <Box
-          component="form"
           sx={{
             "& .MuiTextField-root": { m: 1, width: "25ch" },
           }}
           noValidate
           autoComplete="off"
         >
-          <div id="username">
+          <div id="email">
             <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
               <TextField
                 required
-                id="outlined-username"
+                id="outlined-email"
                 type="text"
-                label="Username"
+                label="Email Address"
+                name="email"
               />
             </FormControl>
           </div>
@@ -51,6 +75,7 @@ const Signup = () => {
                 id="outlined-password"
                 type="password"
                 label="Password"
+                name="password"
               />
             </FormControl>
           </div>

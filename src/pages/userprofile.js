@@ -43,7 +43,7 @@ const UserProfile = () => {
       gym: event.target.gym.value,
     };
     axios
-      .post("http://localhost:8080/userCreate", data)
+      .put("http://localhost:8080/userprofile", data)
       .then((response) => {
         console.log(response.data);
       })
