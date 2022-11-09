@@ -163,7 +163,7 @@ const Home = () => {
                   </div>
                   <div id="message">
                     <FormControl
-                      sx={{ m: 1, width: "25ch" }}
+                      sx={{ m: 1, width: "75ch" }}
                       variant="outlined"
                     >
                       <TextField
