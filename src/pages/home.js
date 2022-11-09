@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   HomeStyle,
   TitleStyle,
@@ -12,7 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import textData from "../resources/text.json";
 import NavBar from "../navbar";
-import Login from "./login.js";
 import background from "../resources/Gym-Background.jpeg";
 import Button from "@mui/material/Button/";
 import SendIcon from "@mui/icons-material/Send";
@@ -24,13 +23,31 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
+import emailjs from "@emailjs/browser";
 
 const Home = () => {
+  const form = useRef();
   const navigate = useNavigate();
-  function handleSubmit(event) {
+
+  const sendEmail = (event) => {
     event.preventDefault();
-    console.log("send email");
-  }
+    emailjs
+      .sendForm(
+        "FitBud_Gmail",
+        "template_ouwwfff",
+        form.current,
+        "3x870QioZ6wndTtEJ"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    event.target.reset();
+  };
   return (
     <>
       <NavBar className="NavBar" />
@@ -61,7 +78,6 @@ const Home = () => {
           </div>
         </TitleStyle>
 
-        <div>{Login.setUser}</div>
         {textData.map((data) => {
           return (
             <>
@@ -117,7 +133,7 @@ const Home = () => {
                 </Accordion>
               </FaqStyle>
 
-              <ContactStyle id="contact" onSubmit={handleSubmit}>
+              <ContactStyle id="contact" ref={form} onSubmit={sendEmail}>
                 <Box>
                   <div id="email">
                     <FormControl
@@ -147,7 +163,7 @@ const Home = () => {
                   </div>
                   <div id="message">
                     <FormControl
-                      sx={{ m: 1, width: "25ch" }}
+                      sx={{ m: 1, width: "75ch" }}
                       variant="outlined"
                     >
                       <TextField

@@ -26,6 +26,7 @@ const UserPreferences = () => {
         })
         .then((response) => {
           setPost(response.data);
+          console.log(post); // delete later, just getting rid of stupid warning
         })
         .catch((error) => {
           console.log(error);

@@ -4,7 +4,6 @@ import {
   LoginForm,
   LoginTitle,
   LoginSign,
-  LoginSignout,
   LoginSignup,
   LoginGoogle,
 } from "../styles/login.style";
@@ -13,26 +12,34 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-
 import jwt_decode from "jwt-decode";
 import Button from "@mui/material/Button/";
+import axios from "axios";
 
 const Login = () => {
   // google sign in
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const google_cid = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const [userEmail, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // hide later maybe in env
+  const google_cid =
+    "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
 
   function handleCallbackResponse(response) {
     var userToken = jwt_decode(response.credential);
     console.log("JWT ID token: " + response.credential);
-    setUser(userToken);
+    setUserEmail(userToken);
     document.getElementById("signInDiv").hidden = true;
   }
 
-  function handleSignOut(event) {
+  function handleSignOut() {
     setUser({});
+    setUserEmail("");
+    setPassword("");
+    localStorage.clear();
     document.getElementById("signInDiv").hidden = false;
+    console.log(user); // delete later, just getting rid of stupid warning
   }
   useEffect(() => {
     /* global google */
@@ -48,8 +55,25 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target.email.value); // send these to database
-    //console.log(event.target.password.value);
+    setUserEmail(event.target.email.value);
+    setPassword(event.target.password.value);
+    const data = {
+      email: userEmail,
+      pword: password,
+    };
+    axios
+      .post("http://localhost:8080/login", data)
+      .then((response) => {
+        console.log(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
+    document.getElementById("signInDiv").hidden = true;
+    event.target.reset();
+    //navigate(-1);
   };
 
   return (
@@ -75,51 +99,68 @@ const Login = () => {
           noValidate
           autoComplete="off"
         >
-          <div id="username">
-            <TextField
-              required
-              id="outlined-username"
-              type="text"
-              label="Username"
-            />
-          </div>
-          <div id="password">
-            <TextField
-              required
-              id="outlined-password"
-              type="password"
-              label="Password"
-            />
-          </div>
-          <Button
-            type="submit"
-            variant="contained"
-            style={{ marginBottom: "12px" }}
-          >
-            Login
-          </Button>
-        </Box>
-        <LoginSign>
-          <LoginGoogle id="signInDiv"></LoginGoogle>
-          {Object.keys(user).length !== 0 && (
-            <LoginSignout onClick={(e) => handleSignOut(e)}>
-              Sign Out
-            </LoginSignout>
+          {Object.keys(userEmail).length === 0 && (
+            <>
+              <div id="email">
+                <TextField
+                  required
+                  id="outlined-email"
+                  type="text"
+                  label="Email Address"
+                  name="email"
+                />
+              </div>
+
+              <div id="password">
+                <TextField
+                  required
+                  id="outlined-password"
+                  type="password"
+                  label="Password"
+                  name="password"
+                />
+              </div>
+            </>
           )}
-          {user && (
+          {userEmail && (
             <div>
-              <img src={user.picture} alt="" />
-              <h2>{user.name}</h2>
+              <img src={userEmail.picture} alt="" />
+              <h2>{userEmail.name}</h2>
             </div>
           )}
-        </LoginSign>
-        <LoginSignup>
-          <text>Don't have a FitBud account?</text>
-          <Link style={{ color: "black" }} to="../signup">
-            {" "}
-            Sign up
-          </Link>
-        </LoginSignup>
+        </Box>
+        <Box component="span">
+          {Object.keys(userEmail).length === 0 && (
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ marginBottom: "12px" }}
+              id="login"
+            >
+              Login
+            </Button>
+          )}
+
+          <LoginSign>
+            <LoginGoogle id="signInDiv"></LoginGoogle>
+            {Object.keys(userEmail).length !== 0 && (
+              <Button
+                variant="contained"
+                style={{ marginBottom: "12px" }}
+                onClick={(e) => handleSignOut(e)}
+              >
+                Sign out
+              </Button>
+            )}
+          </LoginSign>
+          <LoginSignup>
+            <text>Don't have a FitBud account?</text>
+            <Link style={{ color: "black" }} to="../signup">
+              {" "}
+              Sign up
+            </Link>
+          </LoginSignup>
+        </Box>
       </LoginForm>
     </LoginStyle>
   );

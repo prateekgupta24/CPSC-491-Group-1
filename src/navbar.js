@@ -4,6 +4,11 @@ import { Nav, Navleft, Navright, Links } from "./styles/navbar.style.js";
 import Button from "@mui/material/Button/";
 
 const NavBar = () => {
+  //const user = localStorage.getItem("user");
+
+  //const [logged, setLogged] = useState(false);
+  //setLogged(false); // why does this break the website?
+
   return (
     <Nav>
       <Navleft>
@@ -65,6 +70,7 @@ const NavBar = () => {
             <Links>Profile</Links>
           </Link>
         </Button>
+
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link
             style={{ color: "black", textDecoration: "none" }}
@@ -73,6 +79,7 @@ const NavBar = () => {
             <Links>Preferences</Links>
           </Link>
         </Button>
+
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link style={{ color: "black", textDecoration: "none" }} to="/login">
             <Links>SIGN IN</Links>

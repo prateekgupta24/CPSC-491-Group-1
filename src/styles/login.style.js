@@ -24,18 +24,6 @@ const LoginTitle = styled.div`
   margin-bottom: 20px;
 `;
 
-const LoginSignout = styled.button`
-  cursor: pointer;
-  font-size: 25px;
-  background: #01a7d0;
-  border: 1px solid #01a7d0;
-  color: #fff;
-  margin-right: 5px;
-  margin-bottom: 7px;
-  width: 181px;
-  padding-bottom: 5px;
-`;
-
 const LoginPass = styled.input.attrs({ type: "password" })`
   height: 25px;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -57,7 +45,6 @@ const LoginSign = styled.div`
 
 const LoginSignup = styled.div`
   font-size: 13px;
-  margin-top: -20px;
 `;
 
 const LoginGoogle = styled.div`
@@ -67,7 +54,6 @@ export {
   LoginStyle,
   LoginForm,
   LoginTitle,
-  LoginSignout,
   LoginEmail,
   LoginPass,
   LoginSign,
