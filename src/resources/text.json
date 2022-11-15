@@ -1,7 +1,6 @@
 [
-{
-  "about":
-    {
+  {
+    "about": {
       "title": "About Us",
       "description": "The FitBud team consists of 3 students from CSUF.",
       "intro": {
@@ -24,10 +23,11 @@
           "Project Experience:"
         ]
       },
-      "bullet":{
-        "austin": ["Back-end for a twitter clone.",
-        "Created a GUI for the game called Nim that can play with an AI that was provided by the teacher.",
-        "A bot to monitor twitch chat and has basic functions."
+      "bullet": {
+        "austin": [
+          "Back-end for a twitter clone.",
+          "Created a GUI for the game called Nim that can play with an AI that was provided by the teacher.",
+          "A bot to monitor twitch chat and has basic functions."
         ],
         "prateek": [
           "Built a social network for computer science professionals and students",
@@ -40,8 +40,7 @@
         ]
       }
     },
-  "faq": 
-    {
+    "faq": {
       "title": "FAQ",
       "id": {
         "q1": {
@@ -50,19 +49,21 @@
         },
         "q2": {
           "q": "How does this product work?",
-          "a": ["You match with someone depending on your workout preferences, chat with",
-          "them and find a place to workout, and have a great workout session with that buddy."]
+          "a": [
+            "You match with someone depending on your workout preferences, chat with",
+            " them and find a place to workout and have a great workout session with that buddy."
+          ]
         }
       }
-   },
-  "contact":
-  {
-    "title": "Contact Us",
-    "style": "Email:",
-    "emails": ["austinsohn@csu.fullerton.edu",
-    "josearce@csu.fullerton.edu",
-    "pgupta24@csu.fullerton.edu"]
+    },
+    "contact": {
+      "title": "Contact Us",
+      "style": "Email:",
+      "emails": [
+        "austinsohn@csu.fullerton.edu",
+        "josearce@csu.fullerton.edu",
+        "pgupta24@csu.fullerton.edu"
+      ]
+    }
   }
-
-}
 ]

@@ -79,7 +79,6 @@ const HomeBackground = styled.img`
   width: 100vw;
   height: 585px;
 `;
-const HomeRegister = styled.div``;
 
 export {
   HomeStyle,
@@ -93,5 +92,4 @@ export {
   HomeSend,
   ListItems,
   HomeBackground,
-  HomeRegister,
 };
