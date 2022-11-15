@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Profile = styled.div`
   background-color: #282c34;
-  height: 100vw;
+  min-height: 100vh;
 `;
 
 const ProfileForm = styled.form``;

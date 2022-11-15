@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   HomeStyle,
   TitleStyle,
@@ -7,30 +7,31 @@ import {
   ContactStyle,
   ListItems,
   HomeBackground,
-  HomeRegister,
 } from "../styles/home.style";
-import { useNavigate } from "react-router-dom";
 import textData from "../resources/text.json";
 import NavBar from "../navbar";
 import background from "../resources/Gym-Background.jpeg";
-import Button from "@mui/material/Button/";
 import SendIcon from "@mui/icons-material/Send";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 import emailjs from "@emailjs/browser";
 
 const Home = () => {
   const form = useRef();
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const sendEmail = (event) => {
     event.preventDefault();
+    setLoading(true);
+    console.log("in sendEmail");
+
+    console.log(form.current);
     emailjs
       .sendForm(
         "FitBud_Gmail",
@@ -40,13 +41,15 @@ const Home = () => {
       )
       .then(
         (result) => {
+          setLoading(false);
           console.log(result.text);
         },
         (error) => {
           console.log(error.text);
         }
       );
-    event.target.reset();
+
+    //event.target.reset();
   };
   return (
     <>
@@ -60,21 +63,6 @@ const Home = () => {
               src={background}
               alt="gym-background"
             />
-            <HomeRegister>
-              <Button
-                onClick={() => {
-                  navigate("/signup");
-                }}
-                variant="outlined"
-                style={{
-                  padding: "0px",
-                  marginLeft: "5px",
-                  zIndex: "1",
-                }}
-              >
-                Create account
-              </Button>
-            </HomeRegister>
           </div>
         </TitleStyle>
 
@@ -133,56 +121,52 @@ const Home = () => {
                 </Accordion>
               </FaqStyle>
 
-              <ContactStyle id="contact" ref={form} onSubmit={sendEmail}>
-                <Box>
-                  <div id="email">
-                    <FormControl
-                      sx={{ m: 1, width: "25ch" }}
-                      variant="outlined"
-                    >
-                      <TextField
-                        required
-                        id="outlined-email"
-                        type="text"
-                        label="Email"
-                      />
-                    </FormControl>
-                  </div>
-                  <div id="subject">
-                    <FormControl
-                      sx={{ m: 1, width: "25ch" }}
-                      variant="outlined"
-                    >
-                      <TextField
-                        required
-                        id="outlined-subject"
-                        type="text"
-                        label="Subject"
-                      />
-                    </FormControl>
-                  </div>
-                  <div id="message">
-                    <FormControl
-                      sx={{ m: 1, width: "25ch" }}
-                      variant="outlined"
-                    >
-                      <TextField
-                        id="outlined-multiline-static"
-                        label="Message"
-                        multiline
-                        rows={4}
-                      />
-                    </FormControl>
-                  </div>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    endIcon={<SendIcon />}
-                    style={{ width: "90px" }}
-                  >
-                    Send
-                  </Button>
-                </Box>
+              <ContactStyle ref={form} id="contact" onSubmit={sendEmail}>
+                <h1>{data.contact.title}</h1>
+                <div id="email">
+                  <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                    <TextField
+                      required
+                      id="outlined-email"
+                      type="email"
+                      name="email"
+                      label="email"
+                    />
+                  </FormControl>
+                </div>
+                <div id="subject">
+                  <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                    <TextField
+                      required
+                      id="outlined-subject"
+                      type="text"
+                      name="subject"
+                      label="subject"
+                    />
+                  </FormControl>
+                </div>
+                <div id="message">
+                  <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                    <TextField
+                      id="outlined-multiline-static"
+                      name="message"
+                      label="message"
+                      multiline
+                      rows={4}
+                    />
+                  </FormControl>
+                </div>
+                <LoadingButton
+                  type="submit"
+                  size="small"
+                  endIcon={<SendIcon />}
+                  loading={loading}
+                  loadingPosition="end"
+                  variant="contained"
+                  sx={{ width: "11ch" }}
+                >
+                  Send
+                </LoadingButton>
               </ContactStyle>
             </>
           );
