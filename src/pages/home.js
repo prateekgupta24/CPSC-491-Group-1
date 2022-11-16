@@ -9,7 +9,8 @@ import {
   HomeBackground,
 } from "../styles/home.style";
 import textData from "../resources/text.json";
-import NavBar from "../navbar";
+import NavBar from "../resources/navbar";
+import NotAuthNB from "../resources/notauthnb";
 import background from "../resources/Gym-Background.jpeg";
 import SendIcon from "@mui/icons-material/Send";
 import Accordion from "@mui/material/Accordion";
@@ -25,6 +26,7 @@ import emailjs from "@emailjs/browser";
 const Home = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
+  const auth = false; // TODO set auth
 
   const sendEmail = (event) => {
     event.preventDefault();
@@ -53,7 +55,11 @@ const Home = () => {
   };
   return (
     <>
-      <NavBar className="NavBar" />
+      {auth ? (
+        <NavBar className="NavBar" />
+      ) : (
+        <NotAuthNB className="NonAuthNavbar" />
+      )}
       <HomeStyle id="home">
         <TitleStyle className="title">
           <h1>Welcome to FitBud</h1>

@@ -29,7 +29,7 @@ const UserProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // somehow get email
+    // get email from jwt
     const data = {
       fname: event.target.fname.value,
       lname: event.target.lname.value,
@@ -43,7 +43,7 @@ const UserProfile = () => {
       gym: event.target.gym.value,
     };
     axios
-      .put("http://localhost:8080/userprofile", data)
+      .post("http://localhost:8080/userprofile", data)
       .then((response) => {
         console.log(response.data);
       })

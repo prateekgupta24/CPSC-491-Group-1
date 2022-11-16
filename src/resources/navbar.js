@@ -1,14 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Nav, Navleft, Navright, Links } from "./styles/navbar.style.js";
+import { Nav, Navleft, Navright, Links } from "../styles/navbar.style.js";
 import Button from "@mui/material/Button/";
+//import axios from "axios";
 
 const NavBar = () => {
-  //const user = localStorage.getItem("user");
-
-  //const [logged, setLogged] = useState(false);
-  //setLogged(false); // why does this break the website?
-
+  function handleLogOut() {
+    // set auth to false
+    //localStorage.clear();
+    // axios
+    //   .get("http://localhost:8080/logout", data)
+    //   .then((response) => {
+    //     console.log(JSON.stringify(response.data));
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     return;
+    //   });
+  }
   return (
     <Nav>
       <Navleft>
@@ -81,12 +90,16 @@ const NavBar = () => {
         </Button>
 
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
-          <Link style={{ color: "black", textDecoration: "none" }} to="/login">
-            <Links>SIGN IN</Links>
+          <Link
+            style={{ color: "black", textDecoration: "none" }}
+            onClick={handleLogOut}
+          >
+            <Links>SIGN OUT</Links>
           </Link>
         </Button>
       </Navright>
     </Nav>
   );
 };
+
 export default NavBar;

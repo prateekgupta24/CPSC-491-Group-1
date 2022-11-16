@@ -22,6 +22,7 @@ const Login = () => {
   const [user, setUser] = useState({});
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [logged, setLogged] = useState(false);
   // hide later maybe in env
   const google_cid =
     "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
@@ -31,18 +32,37 @@ const Login = () => {
     console.log("JWT ID token: " + response.credential);
     setUserEmail(userToken);
     document.getElementById("signInDiv").hidden = true;
+    setLogged(true);
   }
 
   function handleSignOut() {
     setUser({});
     setUserEmail("");
     setPassword("");
+    setLogged(false);
     localStorage.clear();
+    // const data = {
+    //   email: userEmail,
+    //   pword: password,
+    // };
+    // axios
+    //   .post("http://localhost:8080/logout", data)
+    //   .then((response) => {
+    //     console.log(JSON.stringify(response.data));
+    //     localStorage.setItem("token", JSON.stringify(response.data));
+    //     setLogged(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     return;
+    //   });
     document.getElementById("signInDiv").hidden = false;
+    console.log("signed out");
     console.log(user); // delete later, just getting rid of stupid warning
   }
   useEffect(() => {
     /* global google */
+
     google.accounts.id.initialize({
       client_id: google_cid,
       callback: handleCallbackResponse,
@@ -55,25 +75,34 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(password); // here to just get rid of warning
     setUserEmail(event.target.email.value);
     setPassword(event.target.password.value);
     const data = {
-      email: userEmail,
-      pword: password,
+      email: event.target.email.value,
+      pword: event.target.password.value,
     };
+
     axios
       .post("http://localhost:8080/login", data)
       .then((response) => {
-        console.log(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
+        console.log(JSON.stringify(response.data));
+
+        if (response.data) {
+          setLogged(true);
+          localStorage.setItem("token", JSON.stringify(response.data));
+          document.getElementById("signInDiv").hidden = true;
+          event.target.reset();
+          //navigate(-1);
+        } else {
+          setLogged(false);
+          alert("incorect login");
+        }
       })
       .catch((error) => {
         console.log(error);
         return;
       });
-    document.getElementById("signInDiv").hidden = true;
-    event.target.reset();
-    //navigate(-1);
   };
 
   return (
@@ -90,7 +119,7 @@ const Login = () => {
         <ArrowBackIosIcon style={{}} />
       </IconButton>
       <LoginForm onSubmit={handleSubmit}>
-        <LoginTitle>Create an account</LoginTitle>
+        <LoginTitle>Login</LoginTitle>
         <Box
           component="LoginForm"
           sx={{
@@ -122,15 +151,9 @@ const Login = () => {
               </div>
             </>
           )}
-          {userEmail && (
-            <div>
-              <img src={userEmail.picture} alt="" />
-              <h2>{userEmail.name}</h2>
-            </div>
-          )}
         </Box>
         <Box component="span">
-          {Object.keys(userEmail).length === 0 && (
+          {Object.keys(userEmail).length === 0 && logged === false && (
             <Button
               type="submit"
               variant="contained"
@@ -143,7 +166,13 @@ const Login = () => {
 
           <LoginSign>
             <LoginGoogle id="signInDiv"></LoginGoogle>
-            {Object.keys(userEmail).length !== 0 && (
+            {userEmail && (
+              <div>
+                <img src={userEmail.picture} alt="" />
+                <h2>{userEmail.name}</h2>
+              </div>
+            )}
+            {Object.keys(userEmail).length !== 0 && logged === true && (
               <Button
                 variant="contained"
                 style={{ marginBottom: "12px" }}
