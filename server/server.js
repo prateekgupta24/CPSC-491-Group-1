@@ -64,6 +64,13 @@ app.put("/userprofile", async (req, res) => {
 });
 require("./app/routes/user.routes")(app);
 
+app.put("/preferences", async (req, res) => {
+  // update the preferences
+  const preference = req.body;
+  res.json(userprofile);
+});
+require("./app/routes/preference.routes")(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
