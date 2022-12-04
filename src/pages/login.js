@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   LoginStyle,
   LoginForm,
@@ -15,14 +15,19 @@ import TextField from "@mui/material/TextField";
 import jwt_decode from "jwt-decode";
 import Button from "@mui/material/Button/";
 import axios from "axios";
+import { authContext } from "../services/authContext";
 
 const Login = () => {
   // google sign in
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
-  const [userEmail, setUserEmail] = useState("");
+  // const [user, setUser] = useState({});
+  // const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [logged, setLogged] = useState(false);
+  const { user, setUser } = useContext(authContext);
+  const { userEmail, setUserEmail } = useContext(authContext);
+  const { userJwt, setUserJwt } = useContext(authContext);
+  const { auth, setAuth } = useContext(authContext);
   // hide later maybe in env
   const google_cid =
     "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
@@ -33,6 +38,7 @@ const Login = () => {
     setUserEmail(userToken);
     document.getElementById("signInDiv").hidden = true;
     setLogged(true);
+    setAuth(true);
   }
 
   function handleSignOut() {
@@ -40,6 +46,7 @@ const Login = () => {
     setUserEmail("");
     setPassword("");
     setLogged(false);
+    setAuth(false);
     localStorage.clear();
     // const data = {
     //   email: userEmail,
@@ -75,6 +82,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(event.target.email.value);
     console.log(password); // here to just get rid of warning
     setUserEmail(event.target.email.value);
     setPassword(event.target.password.value);
@@ -90,12 +98,15 @@ const Login = () => {
 
         if (response.data) {
           setLogged(true);
+          setAuth(true);
           localStorage.setItem("token", JSON.stringify(response.data));
           document.getElementById("signInDiv").hidden = true;
           event.target.reset();
+          setUserJwt(JSON.stringify(response.data));
           //navigate(-1);
         } else {
           setLogged(false);
+          setAuth(false);
           alert("incorect login");
         }
       })
@@ -128,7 +139,7 @@ const Login = () => {
           noValidate
           autoComplete="off"
         >
-          {Object.keys(userEmail).length === 0 && (
+          {logged === false && (
             <>
               <div id="email">
                 <TextField
@@ -153,7 +164,7 @@ const Login = () => {
           )}
         </Box>
         <Box component="span">
-          {Object.keys(userEmail).length === 0 && logged === false && (
+          {logged === false && (
             <Button
               type="submit"
               variant="contained"
@@ -166,13 +177,13 @@ const Login = () => {
 
           <LoginSign>
             <LoginGoogle id="signInDiv"></LoginGoogle>
-            {userEmail && (
+            {/* {userEmail && (
               <div>
                 <img src={userEmail.picture} alt="" />
                 <h2>{userEmail.name}</h2>
               </div>
-            )}
-            {Object.keys(userEmail).length !== 0 && logged === true && (
+            )} */}
+            {logged === true && (
               <Button
                 variant="contained"
                 style={{ marginBottom: "12px" }}

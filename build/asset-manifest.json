@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.52354075.css",
+    "main.js": "/static/js/main.69556327.js",
+    "static/js/787.8b62e1cf.chunk.js": "/static/js/787.8b62e1cf.chunk.js",
+    "static/media/Gym-Background.jpeg": "/static/media/Gym-Background.3629d670cc09d44b9a7a.jpeg",
+    "index.html": "/index.html",
+    "main.52354075.css.map": "/static/css/main.52354075.css.map",
+    "main.69556327.js.map": "/static/js/main.69556327.js.map",
+    "787.8b62e1cf.chunk.js.map": "/static/js/787.8b62e1cf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.52354075.css",
+    "static/js/main.69556327.js"
+  ]
+}

@@ -92,9 +92,21 @@ const NavBar = () => {
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link
             style={{ color: "black", textDecoration: "none" }}
+<<<<<<< HEAD:src/resources/navbar.js
             onClick={handleLogOut}
           >
             <Links>SIGN OUT</Links>
+=======
+            to="/yelperhome"
+          >
+            <Links>Yelper</Links>
+          </Link>
+        </Button>
+
+        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
+          <Link style={{ color: "black", textDecoration: "none" }} to="/login">
+            <Links>SIGN IN</Links>
+>>>>>>> 2825b87d89ce5953760368829e7e91c65a0430e2:src/navbar.js
           </Link>
         </Button>
       </Navright>

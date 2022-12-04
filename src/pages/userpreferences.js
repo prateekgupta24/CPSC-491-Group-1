@@ -15,25 +15,32 @@ import axios from "axios";
 
 const UserPreferences = () => {
   const navigate = useNavigate();
-  const [post, setPost] = useState(null);
-  function HandleProfileForm(event) {
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event);
-    useEffect(() => {
-      axios
-        .post("http://http://localhost:8000/users/create_user_user__post", {
-          body: JSON.stringify("test"),
-        })
-        .then((response) => {
-          setPost(response.data);
-          console.log(post); // delete later, just getting rid of stupid warning
-        })
-        .catch((error) => {
-          console.log(error);
-          return;
-        });
-    });
-  }
+
+    const data = {
+      city: event.target.city.value,
+      workoutstyle: event.target.lname.value,
+      age: event.target.age.value,
+      gender: event.target.gender.value,
+      height: event.target.heightft.value + "'" + event.target.heightin.value + '"',
+      weight: event.target.weight.value,
+      distance: event.target.distance.value,
+      gym: event.target.gym.value,
+    };
+    axios
+      .put("http://localhost:8080/preferences", data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
+    navigate(-1);
+  };
+  
 
   return (
     <Preferences>
@@ -49,7 +56,7 @@ const UserPreferences = () => {
         <ArrowBackIosIcon />
       </IconButton>
 
-      <PreferencesForm id="Form" onSubmit={HandleProfileForm}>
+      <PreferencesForm id="Form" onSubmit={handleSubmit}>
         <PreferencesTitle id="Title">User Preferences</PreferencesTitle>
         <PreferencesSection id="My-City">
           <label>My City</label>

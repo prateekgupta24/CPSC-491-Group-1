@@ -1,11 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Subscribe from "./pages/subscribe";
 import UserProfile from "./pages/userprofile";
 import Signup from "./pages/signup";
 import UserPreferences from "./pages/userpreferences";
+import YelperHome from "./pages/yelper";
+import YelperDetails from "./pages/yelperdetails";
 
 function App() {
   return (
@@ -17,6 +21,8 @@ function App() {
         <Route path="/subscribe" element={<Subscribe />} />
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/userpreferences" element={<UserPreferences />} />
+        <Route path="/yelper" element={<YelperHome />} />
+        <Route path="/yelperdetails" element={<YelperDetails />} />
       </Routes>
     </Router>
   );
