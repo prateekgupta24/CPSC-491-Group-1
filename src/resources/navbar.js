@@ -1,23 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navleft, Navright, Links } from "../styles/navbar.style.js";
 import Button from "@mui/material/Button/";
-//import axios from "axios";
+import { authContext } from "../services/authContext";
+// import axios from "axios";
 
 const NavBar = () => {
+  const { auth, setAuth } = useContext(authContext);
+
   function handleLogOut() {
-    // set auth to false
-    //localStorage.clear();
-    // axios
-    //   .get("http://localhost:8080/logout", data)
-    //   .then((response) => {
-    //     console.log(JSON.stringify(response.data));
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     return;
-    //   });
+    setAuth(false);
+    localStorage.clear();
+    window.location.reload();
   }
+
   return (
     <Nav>
       <Navleft>
@@ -92,21 +88,16 @@ const NavBar = () => {
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link
             style={{ color: "black", textDecoration: "none" }}
-<<<<<<< HEAD:src/resources/navbar.js
             onClick={handleLogOut}
-          >
-            <Links>SIGN OUT</Links>
-=======
+          ></Link>
+          <Links>SIGN OUT</Links>
+        </Button>
+        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
+          <Link
+            style={{ color: "black", textDecoration: "none" }}
             to="/yelperhome"
           >
             <Links>Yelper</Links>
-          </Link>
-        </Button>
-
-        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
-          <Link style={{ color: "black", textDecoration: "none" }} to="/login">
-            <Links>SIGN IN</Links>
->>>>>>> 2825b87d89ce5953760368829e7e91c65a0430e2:src/navbar.js
           </Link>
         </Button>
       </Navright>

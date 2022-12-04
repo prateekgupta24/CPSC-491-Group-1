@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navleft, Navright, Links } from "../styles/navbar.style.js";
 import Button from "@mui/material/Button/";
+
 const notAuthNB = () => {
   return (
     <Nav>

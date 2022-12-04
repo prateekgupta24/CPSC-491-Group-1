@@ -12,6 +12,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 import jwt_decode from "jwt-decode";
 import Button from "@mui/material/Button/";
 import axios from "axios";
@@ -20,14 +21,18 @@ import { authContext } from "../services/authContext";
 const Login = () => {
   // google sign in
   const navigate = useNavigate();
-  // const [user, setUser] = useState({});
-  // const [userEmail, setUserEmail] = useState("");
+  const [user, setUser] = useState({});
+  const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [logged, setLogged] = useState(false);
-  const { user, setUser } = useContext(authContext);
-  const { userEmail, setUserEmail } = useContext(authContext);
-  const { userJwt, setUserJwt } = useContext(authContext);
+  const [userJwt, setUserJwt] = useState("");
+  const [loading, setLoading] = useState(false);
+  // const [userAuth, setUserAuth] = useState(false);
   const { auth, setAuth } = useContext(authContext);
+  // const { user, setUser } = useContext(authContext);
+  // const { userEmail, setUserEmail } = useContext(authContext);
+  // const { userJwt, setUserJwt } = useContext(authContext);
+  // const { auth, setAuth } = useContext(authContext);
   // hide later maybe in env
   const google_cid =
     "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
@@ -35,7 +40,7 @@ const Login = () => {
   function handleCallbackResponse(response) {
     var userToken = jwt_decode(response.credential);
     console.log("JWT ID token: " + response.credential);
-    setUserEmail(userToken);
+    setUserJwt(userToken);
     document.getElementById("signInDiv").hidden = true;
     setLogged(true);
     setAuth(true);
@@ -81,6 +86,7 @@ const Login = () => {
   }, [google_cid]);
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     console.log(event.target.email.value);
     console.log(password); // here to just get rid of warning
@@ -103,7 +109,8 @@ const Login = () => {
           document.getElementById("signInDiv").hidden = true;
           event.target.reset();
           setUserJwt(JSON.stringify(response.data));
-          //navigate(-1);
+          setLoading(false);
+          navigate(-1);
         } else {
           setLogged(false);
           setAuth(false);
@@ -165,14 +172,16 @@ const Login = () => {
         </Box>
         <Box component="span">
           {logged === false && (
-            <Button
+            <LoadingButton
               type="submit"
+              size="small"
+              loading={loading}
+              loadingPosition="end"
               variant="contained"
-              style={{ marginBottom: "12px" }}
-              id="login"
+              sx={{ width: "11ch", marginBottom: "7px" }}
             >
               Login
-            </Button>
+            </LoadingButton>
           )}
 
           <LoginSign>
