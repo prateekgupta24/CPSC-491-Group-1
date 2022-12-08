@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const HomeStyle = styled.div`
   background-color: #101425;
+  font-family: Verdana;
   border: 1px none;
   display: flex;
   flex-direction: column;
@@ -32,6 +33,7 @@ const AboutStyle = styled.div`
   flex-direction: column;
   padding-top: 5vh;
   padding-left: 10vh;
+  padding-right: 10vh;
   scroll-margin-top: 60.5px;
 `;
 
@@ -51,6 +53,7 @@ const FaqStyle = styled.div`
   min-height: 50vh;
   padding-top: 5vh;
   padding-left: 10vh;
+  padding-right: 10vh;
   scroll-margin-top: 60.5px;
 `;
 
