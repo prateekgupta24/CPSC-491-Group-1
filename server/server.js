@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const ObjectID = require("mongodb").ObjectId;
 
 app.use(cors());
 app.use(express.json());
@@ -32,9 +33,9 @@ db.mongoose
   });
 
 // get mongodb id?
-function getID(email) {
-  const userID = db.userprofile.findOne({ email: email });
-  console.log(userID._id);
+async function getID(email) {
+  console.log(email);
+  const userID = await db.userprofile.findOne({ email: email });
   return userID._id;
 }
 
@@ -71,8 +72,6 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   // check if email exists in database
   const user = req.body;
-  console.log("log in");
-  console.log(user.email);
   db.userprofile.findOne({ email: user.email }, function (err, result) {
     if (err) throw err;
     console.log(result);
@@ -83,7 +82,6 @@ app.post("/login", async (req, res) => {
         "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
       );
       res.json({ accessToken: accessToken });
-      console.log(result._id);
     } else {
       res.json("");
     }
@@ -96,11 +94,16 @@ app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
   // updates userprofile/adds with user
-  const userID = getID(user["email"]);
-  db.userprofile.updateOne({ user }, function (err, result) {
-    if (err) throw err;
-    console.log(result);
-  });
+  const userID = await getID(user["email"]);
+  console.log(userID);
+  db.userprofile.updateOne(
+    { _id: userID },
+    { $set: user },
+    function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    }
+  );
   res.json(user);
 });
 require("./app/routes/user.routes")(app);
@@ -108,13 +111,18 @@ require("./app/routes/user.routes")(app);
 app.put("/preferences", async (req, res) => {
   // update the preferences
   const preference = req.body;
-  db.userprofile.updateOne({ preference }, function (err, result) {
-    if (err) throw err;
-    console.log(result);
-  });
+  const userID = getID(user["email"]);
+  db.userprofile.updateOne(
+    { _id: userID },
+    { preference },
+    function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    }
+  );
   res.json(userprofile);
 });
-require("./app/routes/preference.routes")(app);
+// require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

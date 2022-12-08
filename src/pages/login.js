@@ -92,6 +92,7 @@ const Login = () => {
     console.log(password); // here to just get rid of warning
     setUserEmail(event.target.email.value);
     setPassword(event.target.password.value);
+
     const data = {
       email: event.target.email.value,
       pword: event.target.password.value,
@@ -105,7 +106,9 @@ const Login = () => {
         if (response.data) {
           setLogged(true);
           setAuth(true);
-          localStorage.setItem("token", JSON.stringify(response.data));
+          // localStorage.setItem("token", JSON.stringify(response.data));
+          localStorage.setItem("email", event.target.email.value);
+          localStorage.setItem("auth", true);
           document.getElementById("signInDiv").hidden = true;
           event.target.reset();
           setUserJwt(JSON.stringify(response.data));

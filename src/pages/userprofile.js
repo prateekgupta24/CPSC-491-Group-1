@@ -30,7 +30,9 @@ const UserProfile = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // get email from jwt
+
     const data = {
+      email: localStorage.getItem("email"),
       fname: event.target.fname.value,
       lname: event.target.lname.value,
       age: event.target.age.value,
@@ -51,7 +53,7 @@ const UserProfile = () => {
         console.log(error);
         return;
       });
-    navigate(-1);
+    //navigate(-1);
   };
 
   return (
