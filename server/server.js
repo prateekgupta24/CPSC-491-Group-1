@@ -39,12 +39,12 @@ app.get("/", (req, res) => {
 // user sign up
 app.post("/signup", async (req, res) => {
   const user = req.body;
-  db.userinfo.findOne({ email: user.email }, async function (err, result) {
+  db.userprofile.findOne({ email: user.email }, async function (err, result) {
     // check if email exists in database
     if (err) throw err;
     // console.log(result); // outputs result if exists
     if (!result) {
-      const newUser = new db.userinfo(user);
+      const newUser = new db.userprofile(user);
       await newUser.save(); // saves to mongodb
       res.json(newUser);
     } else {
@@ -66,7 +66,7 @@ app.post("/login", async (req, res) => {
   const user = req.body;
   console.log("log in");
   console.log(user.email);
-  db.userprofiles.findOne({ email: user.email }, function (err, result) {
+  db.userprofile.findOne({ email: user.email }, function (err, result) {
     if (err) throw err;
     console.log(result);
     if (result) {
@@ -84,12 +84,12 @@ app.post("/login", async (req, res) => {
 
 // user profile settings
 app.post("/userprofile", async (req, res) => {
-  // TODO: get user id from userinfo and add that to userprofile
+  // TODO: get user id from userprofile and add that to userprofile
   // TODO: fix updating the database
 
   // updates userinfo with first and last name
   const name = { firstname: req.body["fname"], lastname: req.body["lname"] };
-  db.userinfo.updateOne({ name }, function (err, result) {
+  db.userprofile.updateOne({ name }, function (err, result) {
     if (err) throw err;
     console.log(result);
   });
@@ -97,9 +97,9 @@ app.post("/userprofile", async (req, res) => {
   delete req.body.fname;
   delete req.body.lname;
   const user = req.body;
-  console.log(user);
+  user.id = console.log(user);
   // updates userprofile/adds with user
-  db.userprofiles.updateOne({ user }, function (err, result) {
+  db.userprofile.updateOne({ user }, function (err, result) {
     if (err) throw err;
     console.log(result);
   });
