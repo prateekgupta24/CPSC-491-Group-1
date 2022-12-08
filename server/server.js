@@ -31,6 +31,13 @@ db.mongoose
     process.exit();
   });
 
+// get mongodb id?
+function getID(email) {
+  const userID = db.userprofile.findOne({ email: email });
+  console.log(userID._id);
+  return userID._id;
+}
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to fitbud application." });
@@ -76,6 +83,7 @@ app.post("/login", async (req, res) => {
         "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
       );
       res.json({ accessToken: accessToken });
+      console.log(result._id);
     } else {
       res.json("");
     }
@@ -83,11 +91,12 @@ app.post("/login", async (req, res) => {
 });
 
 // user profile settings
+// does not check if user exists
 app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
-  user.id = console.log(user);
   // updates userprofile/adds with user
+  const userID = getID(user["email"]);
   db.userprofile.updateOne({ user }, function (err, result) {
     if (err) throw err;
     console.log(result);
@@ -96,13 +105,16 @@ app.post("/userprofile", async (req, res) => {
 });
 require("./app/routes/user.routes")(app);
 
-// app.put("/preferences", async (req, res) => {
-//   // update the preferences
-//   const preference = req.body;
-//   user;
-//   res.json(userprofile);
-// });
-// require("./app/routes/preference.routes")(app);
+app.put("/preferences", async (req, res) => {
+  // update the preferences
+  const preference = req.body;
+  db.userprofile.updateOne({ preference }, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+  });
+  res.json(userprofile);
+});
+require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
