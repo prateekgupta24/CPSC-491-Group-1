@@ -27,7 +27,7 @@ import { authContext } from "../services/authContext";
 const Home = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
-  const { auth, setAuth } = useContext(authContext); // TODO set auth
+  const { auth, setAuth } = useContext(authContext);
 
   const sendEmail = (event) => {
     event.preventDefault();

@@ -1,37 +1,23 @@
 const db = require("../models");
-const User = db.userprofiles;
+const User = db.userinfo;
 
 // Create and Save a new User
-exports.create = (req, res) => {
-  
-};
+exports.create = (req, res) => {};
 
 // Retrieve all Users from the database.
-exports.findAll = (req, res) => {
-  
-};
+exports.findAll = (req, res) => {};
 
 // Find a single User with an id
-exports.findOne = (req, res) => {
-  
-};
+exports.findOne = (req, res) => {};
 
 // Update a User by the id in the request
-exports.update = (req, res) => {
-  
-};
+exports.update = (req, res) => {};
 
 // Delete a User with the specified id in the request
-exports.delete = (req, res) => {
-  
-};
+exports.delete = (req, res) => {};
 
 // Delete all User from the database.
-exports.deleteAll = (req, res) => {
-  
-};
+exports.deleteAll = (req, res) => {};
 
 // Find all published Users
-exports.findAllPublished = (req, res) => {
-  
-};
+exports.findAllPublished = (req, res) => {};

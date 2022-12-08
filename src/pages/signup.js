@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SignupStyle, SignupForm, SignupTitle } from "../styles/signup.style";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -8,9 +8,12 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import axios from "axios";
+import { authContext } from "../services/authContext";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { auth, setAuth } = useContext(authContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
@@ -24,6 +27,8 @@ const Signup = () => {
         if (!response.data) {
           alert("already exists");
         } else {
+          localStorage.setItem("email", data["email"]);
+          setAuth(true);
           navigate("/");
         }
       })
