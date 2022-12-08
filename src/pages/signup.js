@@ -28,6 +28,7 @@ const Signup = () => {
           alert("already exists");
         } else {
           localStorage.setItem("email", data["email"]);
+          localStorage.setItem("auth", true);
           setAuth(true);
           navigate("/");
         }

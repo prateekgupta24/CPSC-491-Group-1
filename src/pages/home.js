@@ -28,7 +28,10 @@ const Home = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
   const { auth, setAuth } = useContext(authContext);
-
+  if (localStorage.getItem("auth") === "true") {
+    // localstorage sets boolean values as strings
+    setAuth(true);
+  }
   const sendEmail = (event) => {
     event.preventDefault();
     setLoading(true);

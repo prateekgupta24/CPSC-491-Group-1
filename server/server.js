@@ -84,18 +84,7 @@ app.post("/login", async (req, res) => {
 
 // user profile settings
 app.post("/userprofile", async (req, res) => {
-  // TODO: get user id from userprofile and add that to userprofile
-  // TODO: fix updating the database
-
-  // updates userinfo with first and last name
-  const name = { firstname: req.body["fname"], lastname: req.body["lname"] };
-  db.userprofile.updateOne({ name }, function (err, result) {
-    if (err) throw err;
-    console.log(result);
-  });
   // removes first and last name from body
-  delete req.body.fname;
-  delete req.body.lname;
   const user = req.body;
   user.id = console.log(user);
   // updates userprofile/adds with user
@@ -113,7 +102,7 @@ require("./app/routes/user.routes")(app);
 //   user;
 //   res.json(userprofile);
 // });
-require("./app/routes/preference.routes")(app);
+// require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

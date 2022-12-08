@@ -11,7 +11,7 @@ const NavBar = () => {
   function handleLogOut() {
     setAuth(false);
     localStorage.clear();
-    window.location.reload();
+    // window.location.reload(); // refreshes page
   }
 
   return (
@@ -88,17 +88,19 @@ const NavBar = () => {
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link
             style={{ color: "black", textDecoration: "none" }}
-            onClick={handleLogOut}
-          ></Link>
-          <Links>SIGN OUT</Links>
-        </Button>
-        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
-          <Link
-            style={{ color: "black", textDecoration: "none" }}
             to="/yelperhome"
           >
             <Links>Yelper</Links>
           </Link>
+        </Button>
+
+        <Button
+          variant="contained"
+          style={{ padding: "0px", margin: "5px" }}
+          onClick={handleLogOut}
+        >
+          <Link style={{ color: "black", textDecoration: "none" }}></Link>
+          <Links>SIGN OUT</Links>
         </Button>
       </Navright>
     </Nav>
