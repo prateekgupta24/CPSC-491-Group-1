@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   LoginStyle,
   LoginForm,
@@ -12,9 +12,11 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 import jwt_decode from "jwt-decode";
 import Button from "@mui/material/Button/";
 import axios from "axios";
+import { authContext } from "../services/authContext";
 
 const Login = () => {
   // google sign in
@@ -22,6 +24,15 @@ const Login = () => {
   const [user, setUser] = useState({});
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [logged, setLogged] = useState(false);
+  const [userJwt, setUserJwt] = useState("");
+  const [loading, setLoading] = useState(false);
+  // const [userAuth, setUserAuth] = useState(false);
+  const { auth, setAuth } = useContext(authContext);
+  // const { user, setUser } = useContext(authContext);
+  // const { userEmail, setUserEmail } = useContext(authContext);
+  // const { userJwt, setUserJwt } = useContext(authContext);
+  // const { auth, setAuth } = useContext(authContext);
   // hide later maybe in env
   const google_cid =
     "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
@@ -29,20 +40,41 @@ const Login = () => {
   function handleCallbackResponse(response) {
     var userToken = jwt_decode(response.credential);
     console.log("JWT ID token: " + response.credential);
-    setUserEmail(userToken);
+    setUserJwt(userToken);
     document.getElementById("signInDiv").hidden = true;
+    setLogged(true);
+    setAuth(true);
   }
 
   function handleSignOut() {
     setUser({});
     setUserEmail("");
     setPassword("");
+    setLogged(false);
+    setAuth(false);
     localStorage.clear();
+    // const data = {
+    //   email: userEmail,
+    //   pword: password,
+    // };
+    // axios
+    //   .post("http://localhost:8080/logout", data)
+    //   .then((response) => {
+    //     console.log(JSON.stringify(response.data));
+    //     localStorage.setItem("token", JSON.stringify(response.data));
+    //     setLogged(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     return;
+    //   });
     document.getElementById("signInDiv").hidden = false;
+    console.log("signed out");
     console.log(user); // delete later, just getting rid of stupid warning
   }
   useEffect(() => {
     /* global google */
+
     google.accounts.id.initialize({
       client_id: google_cid,
       callback: handleCallbackResponse,
@@ -54,26 +86,41 @@ const Login = () => {
   }, [google_cid]);
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
+    console.log(event.target.email.value);
+    console.log(password); // here to just get rid of warning
     setUserEmail(event.target.email.value);
     setPassword(event.target.password.value);
     const data = {
-      email: userEmail,
-      pword: password,
+      email: event.target.email.value,
+      pword: event.target.password.value,
     };
+
     axios
       .post("http://localhost:8080/login", data)
       .then((response) => {
-        console.log(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
+        console.log(JSON.stringify(response.data));
+
+        if (response.data) {
+          setLogged(true);
+          setAuth(true);
+          localStorage.setItem("token", JSON.stringify(response.data));
+          document.getElementById("signInDiv").hidden = true;
+          event.target.reset();
+          setUserJwt(JSON.stringify(response.data));
+          setLoading(false);
+          navigate(-1);
+        } else {
+          setLogged(false);
+          setAuth(false);
+          alert("incorect login");
+        }
       })
       .catch((error) => {
         console.log(error);
         return;
       });
-    document.getElementById("signInDiv").hidden = true;
-    event.target.reset();
-    //navigate(-1);
   };
 
   return (
@@ -90,7 +137,7 @@ const Login = () => {
         <ArrowBackIosIcon style={{}} />
       </IconButton>
       <LoginForm onSubmit={handleSubmit}>
-        <LoginTitle>Create an account</LoginTitle>
+        <LoginTitle>Login</LoginTitle>
         <Box
           component="LoginForm"
           sx={{
@@ -99,7 +146,7 @@ const Login = () => {
           noValidate
           autoComplete="off"
         >
-          {Object.keys(userEmail).length === 0 && (
+          {logged === false && (
             <>
               <div id="email">
                 <TextField
@@ -122,28 +169,30 @@ const Login = () => {
               </div>
             </>
           )}
-          {userEmail && (
-            <div>
-              <img src={userEmail.picture} alt="" />
-              <h2>{userEmail.name}</h2>
-            </div>
-          )}
         </Box>
         <Box component="span">
-          {Object.keys(userEmail).length === 0 && (
-            <Button
+          {logged === false && (
+            <LoadingButton
               type="submit"
+              size="small"
+              loading={loading}
+              loadingPosition="end"
               variant="contained"
-              style={{ marginBottom: "12px" }}
-              id="login"
+              sx={{ width: "11ch", marginBottom: "7px" }}
             >
               Login
-            </Button>
+            </LoadingButton>
           )}
 
           <LoginSign>
             <LoginGoogle id="signInDiv"></LoginGoogle>
-            {Object.keys(userEmail).length !== 0 && (
+            {/* {userEmail && (
+              <div>
+                <img src={userEmail.picture} alt="" />
+                <h2>{userEmail.name}</h2>
+              </div>
+            )} */}
+            {logged === true && (
               <Button
                 variant="contained"
                 style={{ marginBottom: "12px" }}
