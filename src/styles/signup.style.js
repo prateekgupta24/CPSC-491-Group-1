@@ -15,6 +15,7 @@ const SignupForm = styled.form`
   margin-left: 30%;
   margin-right: 30%;
   background-color: #D9D9D9;
+  padding: 2rem;
   min-width: 40vw;
 `;
 

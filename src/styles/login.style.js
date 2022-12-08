@@ -12,8 +12,9 @@ const LoginForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-top: 5%;
+  margin-left: 30%;
+  margin-right: 30%;
   background-color: #D9D9D9;
   padding: 2rem;
   min-width: 40vw;
