@@ -89,7 +89,7 @@ app.post("/login", async (req, res) => {
 });
 
 // user profile settings
-// does not check if user exists
+// TODO: figure out a way to update only if its empty
 app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
@@ -114,7 +114,7 @@ app.put("/preferences", async (req, res) => {
   const userID = getID(user["email"]);
   db.userprofile.updateOne(
     { _id: userID },
-    { preference },
+    { $set: preference },
     function (err, result) {
       if (err) throw err;
       console.log(result);
