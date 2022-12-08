@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const SignupStyle = styled.div`
-  background-color: #282c34;
+  background-color: #101425;
   color: white;
   height: 100vh;
 `;
@@ -11,13 +11,16 @@ const SignupForm = styled.form`
   color: black;
   flex-direction: column;
   align-items: center;
-  margin-left: 20%;
-  margin-right: 20%;
-  background-color: whitesmoke;
+  margin-top: 5%;
+  margin-left: 30%;
+  margin-right: 30%;
+  background-color: #D9D9D9;
   min-width: 40vw;
 `;
 
 const SignupTitle = styled.div`
+  color: #101425;
+  font-family: Mattone;
   font-size: 40px;
   margin-bottom: 20px;
 `;

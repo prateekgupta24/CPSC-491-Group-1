@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const LoginStyle = styled.div`
-  background-color: #282c34;
+  background-color: #101425;
   color: white;
   height: 100vh;
 `;
@@ -14,12 +14,14 @@ const LoginForm = styled.form`
   align-items: center;
   margin-left: 20%;
   margin-right: 20%;
-  background-color: whitesmoke;
+  background-color: #D9D9D9;
   padding: 2rem;
   min-width: 40vw;
 `;
 
 const LoginTitle = styled.div`
+  color: #101425;
+  font-family: Mattone;
   font-size: 40px;
   margin-bottom: 20px;
 `;

@@ -90,7 +90,7 @@ const Login = () => {
         <ArrowBackIosIcon style={{}} />
       </IconButton>
       <LoginForm onSubmit={handleSubmit}>
-        <LoginTitle>Create an account</LoginTitle>
+        <LoginTitle>Log in to FitBud</LoginTitle>
         <Box
           component="LoginForm"
           sx={{
