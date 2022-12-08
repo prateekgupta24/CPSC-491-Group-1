@@ -7,13 +7,6 @@ module.exports = (mongoose) => {
         pword: String,
         fname: String,
         lname: String,
-        age: Number,
-        gender: String,
-        height: String,
-        weight: Number,
-        state: String,
-        city: String,
-        gym: String,
       },
       { timestamps: true }
     )

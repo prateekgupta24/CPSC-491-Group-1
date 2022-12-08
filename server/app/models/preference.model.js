@@ -3,14 +3,15 @@ module.exports = (mongoose) => {
     "preference",
     new mongoose.Schema(
       {
-        city: String,
+        id: String,
         workoutstyle: String,
         age: Number,
         gender: String,
         height: String,
         weight: Number,
-        distance: Number,
         gym: String,
+        state: String,
+        city: String,
       },
       { timestamps: true }
     )
