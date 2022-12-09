@@ -140,7 +140,8 @@ const Login = () => {
         <ArrowBackIosIcon style={{}} />
       </IconButton>
       <LoginForm onSubmit={handleSubmit}>
-        <LoginTitle>Login</LoginTitle>
+
+        <LoginTitle>Log in to FitBud</LoginTitle>
         <Box
           component="LoginForm"
           sx={{

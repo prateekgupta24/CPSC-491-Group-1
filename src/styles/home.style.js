@@ -1,37 +1,47 @@
 import styled from "styled-components";
+//import url("https://fonts.googleapis.com/css?family=Bodoni+Moda:700|Outfit:400,700");
 
 const HomeStyle = styled.div`
-  background-color: white;
+  background-color: #101425;
+  font-family: Verdana;
+  border: 1px none;
   display: flex;
   flex-direction: column;
   align-items: left;
-  color: black;
+  color: white;
   height: 100vh;
-  max-width: 100vw;
-  padding: 5vh;
   margin: 0;
   scroll-margin-top: 60.5px;
 `;
 
 const TitleStyle = styled.div`
   display: flex;
+  font-family: Mattone;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 20px;
+  padding-top: 40px;
   scroll-margin-top: 60.5px;
 `;
 
 const AboutStyle = styled.div`
+  background-color: #101425;  
   display: flex;
   min-height: 100vh;
+  align-items: flex-start;
   white-space: pre-line;
   flex-direction: column;
+  padding-top: 5vh;
+  padding-left: 10vh;
+  padding-right: 10vh;
   scroll-margin-top: 60.5px;
 `;
 
 const ContactStyle = styled.form`
+  background-color: #101425;
   min-height: 100vh;
+  padding-top: 5vh;
+  padding-left: 10vh;
   scroll-margin-top: 60.5px;
   display: flex;
   flex-direction: column;
@@ -39,16 +49,22 @@ const ContactStyle = styled.form`
 `;
 
 const FaqStyle = styled.div`
-  min-height: 100vh;
+  background-color: #101425;
+  min-height: 50vh;
+  padding-top: 5vh;
+  padding-left: 10vh;
+  padding-right: 10vh;
   scroll-margin-top: 60.5px;
 `;
 
 const HomeEmail = styled.input.attrs({ type: "text" })`
+  color: white;
   height: 25px;
   width: 20vw;
 `;
 
 const HomeSubject = styled.input.attrs({ type: "text" })`
+  color: white;
   height: 25px;
   width: 20vw;
 `;
@@ -77,7 +93,7 @@ const HomeBackground = styled.img`
   background-size: cover;
   object-fit: cover;
   width: 100vw;
-  height: 585px;
+  height: 625px;
 `;
 
 export {

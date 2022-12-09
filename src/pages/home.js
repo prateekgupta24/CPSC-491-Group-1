@@ -22,11 +22,19 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 import emailjs from "@emailjs/browser";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { authContext } from "../services/authContext";
 
 const Home = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
   const { auth, setAuth } = useContext(authContext);
   if (localStorage.getItem("auth") === "true") {
     // localstorage sets boolean values as strings
@@ -134,6 +142,7 @@ const Home = () => {
               </FaqStyle>
 
               <ContactStyle ref={form} id="contact" onSubmit={sendEmail}>
+              <ThemeProvider theme={darkTheme}>
                 <h1>{data.contact.title}</h1>
                 <div id="email">
                   <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
@@ -179,6 +188,7 @@ const Home = () => {
                 >
                   Send
                 </LoadingButton>
+                </ThemeProvider>
               </ContactStyle>
             </>
           );

@@ -8,8 +8,8 @@ const Nav = styled.nav`
   top: 0;
   display: flex;
   flex-direction: row;
-  background-color: lightgray;
-  color: black;
+  background-color: #101425;
+  color: white;
   overflow: hidden;
   width: 100%;
   justify-content: space-between;
@@ -24,13 +24,13 @@ const Navleft = styled.div`
 const Navright = styled.div`
   display: flex;
   justify-content: right;
-  color: black;
+  color: white;
   padding: 5px;
 `;
 
 const Links = styled.div`
   margin: 7px;
-  color: black;
+  color: white;
   text-decoration: none;
 `;
 
