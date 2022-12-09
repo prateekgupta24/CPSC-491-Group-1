@@ -24,7 +24,8 @@ const UserPreferences = () => {
       workoutstyle: event.target.lname.value,
       age: event.target.age.value,
       gender: event.target.gender.value,
-      height: event.target.heightft.value + "'" + event.target.heightin.value + '"',
+      height:
+        event.target.heightft.value + "'" + event.target.heightin.value + '"',
       weight: event.target.weight.value,
       distance: event.target.distance.value,
       gym: event.target.gym.value,
@@ -40,7 +41,6 @@ const UserPreferences = () => {
       });
     navigate(-1);
   };
-  
 
   return (
     <Preferences>
@@ -73,7 +73,7 @@ const UserPreferences = () => {
         </PreferencesSection>
 
         <PreferencesSection id="Gender">
-          <label>Interested in</label>
+          <label>Workout Partner</label>
           <PreferencesSelect>
             <option value="" />
             <option value="1">Male</option>
@@ -124,16 +124,6 @@ const UserPreferences = () => {
             <option value="" />
             <option value="1">lbs</option>
             <option value="2">kgs</option>
-          </PreferencesSelect>
-        </PreferencesSection>
-
-        <PreferencesSection id="Distance">
-          <label>Distance</label>
-          <PreferencesInput />
-          <PreferencesSelect>
-            <option value="" />
-            <option value="1">miles</option>
-            <option value="2">kilometers</option>
           </PreferencesSelect>
         </PreferencesSection>
 
