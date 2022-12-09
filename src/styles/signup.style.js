@@ -12,7 +12,7 @@ const SignupForm = styled.form`
   flex-direction: column;
   align-items: center;
   margin-top: 5%;
-  margin-left: 30%;
+  margin-left: 28%;
   margin-right: 30%;
   background-color: #D9D9D9;
   padding: 2rem;
