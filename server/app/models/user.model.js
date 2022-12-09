@@ -14,6 +14,8 @@ module.exports = (mongoose) => {
         state: String,
         city: String,
         gym: String,
+
+        workoutstyle: String,
       },
       { timestamps: true }
     )

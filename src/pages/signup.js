@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { SignupStyle, SignupForm, SignupTitle } from "../styles/signup.style";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -8,30 +8,35 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import axios from "axios";
+import { authContext } from "../services/authContext";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { auth, setAuth } = useContext(authContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setUserEmail(event.target.email.value);
-    setPassword(event.target.password.value);
-    // check if email exists
     const data = {
-      email: userEmail,
-      pword: password,
+      email: event.target.email.value,
+      pword: event.target.password.value,
     };
     axios
-      .post("http://localhost:8080/userCreate", data)
+      .post("http://localhost:8080/signup", data)
       .then((response) => {
         console.log(response.data);
+        if (!response.data) {
+          alert("already exists");
+        } else {
+          localStorage.setItem("email", data["email"]);
+          localStorage.setItem("auth", true);
+          setAuth(true);
+          navigate("/");
+        }
       })
       .catch((error) => {
         console.log(error);
         return;
       });
-    navigate(-1);
   };
 
   return (
@@ -84,7 +89,7 @@ const Signup = () => {
             variant="contained"
             style={{ marginBottom: "12px" }}
           >
-            Login
+            Sign up
           </Button>
         </Box>
       </SignupForm>

@@ -29,8 +29,10 @@ const UserProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // somehow get email
+    // get email from jwt
+
     const data = {
+      email: localStorage.getItem("email"),
       fname: event.target.fname.value,
       lname: event.target.lname.value,
       age: event.target.age.value,
@@ -43,7 +45,7 @@ const UserProfile = () => {
       gym: event.target.gym.value,
     };
     axios
-      .put("http://localhost:8080/userprofile", data)
+      .post("http://localhost:8080/userprofile", data)
       .then((response) => {
         console.log(response.data);
       })
@@ -51,7 +53,7 @@ const UserProfile = () => {
         console.log(error);
         return;
       });
-    navigate(-1);
+    //navigate(-1);
   };
 
   return (

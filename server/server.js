@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const ObjectID = require("mongodb").ObjectId;
 
 app.use(cors());
 app.use(express.json());
@@ -31,6 +32,13 @@ db.mongoose
     process.exit();
   });
 
+// get mongodb id?
+async function getID(email) {
+  console.log(email);
+  const userID = await db.userprofile.findOne({ email: email });
+  return userID._id;
+}
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to fitbud application." });
@@ -38,49 +46,86 @@ app.get("/", (req, res) => {
 
 // user sign up
 app.post("/signup", async (req, res) => {
-  // check if email exists in database
   const user = req.body;
-  console.log(user);
-  const newUser = new db.userprofiles(user);
-  //await newUser.save(); // saves to mongodb
-  res.json(newUser);
+  db.userprofile.findOne({ email: user.email }, async function (err, result) {
+    // check if email exists in database
+    if (err) throw err;
+    // console.log(result); // outputs result if exists
+    if (!result) {
+      const newUser = new db.userprofile(user);
+      await newUser.save(); // saves to mongodb
+      res.json(newUser);
+    } else {
+      res.json("");
+    }
+  });
 });
+// app.post("/logout", async (req, res) => {
+//   const user = req.body;
+//   req.body["email"] = "";
+//   req.body["pword"] = "";
+//   //console.log(user);
+
+//   res.json({ user });
+// });
 
 app.post("/login", async (req, res) => {
   // check if email exists in database
   const user = req.body;
-  const accessToken = jwt.sign(
-    user,
-    "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
-  );
-  res.json({ accessToken: accessToken });
+  db.userprofile.findOne({ email: user.email }, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+    if (result) {
+      console.log("exists");
+      const accessToken = jwt.sign(
+        user,
+        "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
+      );
+      res.json({ accessToken: accessToken });
+    } else {
+      res.json("");
+    }
+  });
 });
 
 // user profile settings
-app.put("/userprofile", async (req, res) => {
-  // update the userprofile
+// TODO: figure out a way to update only if its empty
+app.post("/userprofile", async (req, res) => {
+  // removes first and last name from body
   const user = req.body;
-  res.json(userprofile);
+  // updates userprofile/adds with user
+  const userID = await getID(user["email"]);
+  console.log(userID);
+  db.userprofile.updateOne(
+    { _id: userID },
+    { $set: user },
+    function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    }
+  );
+  res.json(user);
 });
 require("./app/routes/user.routes")(app);
+
+app.put("/preferences", async (req, res) => {
+  // update the preferences
+  const preference = req.body;
+  const userID = getID(user["email"]);
+  db.userprofile.updateOne(
+    { _id: userID },
+    { $set: preference },
+    function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    }
+  );
+  res.json(userprofile);
+});
+// require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-
-// function authToken(req, res, nex) {
-//   const authHeader = req.headers["authorization"];
-//   const token = authHeader && authHeader.split(" ")[1];
-//   if (token == null) return res.sendStatus(401);
-//   jwt.verify(
-//     token,
-//     "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09",
-//     (err, user) => {
-//       if (err) return res.sendStatus(403); // don't have access
-//       req.user = user;
-//       next();
-//     }
-//   );
-// }

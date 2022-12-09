@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import {
   HomeStyle,
   TitleStyle,
@@ -9,7 +9,8 @@ import {
   HomeBackground,
 } from "../styles/home.style";
 import textData from "../resources/text.json";
-import NavBar from "../navbar";
+import NavBar from "../resources/navbar";
+import NotAuthNB from "../resources/notauthnb";
 import background from "../resources/Gym-Background.jpeg";
 import SendIcon from "@mui/icons-material/Send";
 import Accordion from "@mui/material/Accordion";
@@ -22,6 +23,7 @@ import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 import emailjs from "@emailjs/browser";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { authContext } from "../services/authContext";
 
 const Home = () => {
   const form = useRef();
@@ -33,6 +35,11 @@ const darkTheme = createTheme({
   },
 });
 
+  const { auth, setAuth } = useContext(authContext);
+  if (localStorage.getItem("auth") === "true") {
+    // localstorage sets boolean values as strings
+    setAuth(true);
+  }
   const sendEmail = (event) => {
     event.preventDefault();
     setLoading(true);
@@ -60,7 +67,13 @@ const darkTheme = createTheme({
   };
   return (
     <>
-      <NavBar className="NavBar" />
+      {auth ? (
+        <NavBar className="NavBar" />
+      ) : (
+        <NotAuthNB className="NonAuthNavbar">
+          <div>{auth}test</div>
+        </NotAuthNB>
+      )}
       <HomeStyle id="home">
         <TitleStyle className="title">
           <h1>Welcome to FitBud</h1>
