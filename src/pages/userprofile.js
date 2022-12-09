@@ -1,5 +1,5 @@
 import React from "react";
-import { Profile, ProfileForm } from "../styles/userprofile.style";
+import { Profile, ProfileForm, ProfileTitle } from "../styles/userprofile.style";
 import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -70,6 +70,7 @@ const UserProfile = () => {
           <ArrowBackIosIcon />
         </IconButton>
         <ProfileForm onSubmit={handleSubmit}>
+        <ProfileTitle id="Title">User Profile</ProfileTitle>
           <Box
             component="ProfileForm"
             sx={{

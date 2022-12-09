@@ -1,15 +1,20 @@
 import styled from "styled-components";
 
 const Profile = styled.div`
-  background-color: #282c34;
+  background-color: #101425;
   min-height: 100vh;
 `;
 
-const ProfileForm = styled.form``;
+const ProfileForm = styled.form`
+  margin-left: 35vw;
+`;
 
 const ProfileTitle = styled.div`
   font-size: 40px;
+  font-family: Mattone;
+  justify-content: center;
   margin-bottom: 20px;
+  margin-left: 130px;
 `;
 
 const ProfileSection = styled.div`
