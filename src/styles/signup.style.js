@@ -8,7 +8,7 @@ const SignupStyle = styled.div`
 
 const SignupForm = styled.form`
   display: flex;
-  color: black;
+  color: #101525;
   flex-direction: column;
   align-items: center;
   margin-top: 5%;
@@ -23,6 +23,7 @@ const SignupTitle = styled.div`
   color: #101425;
   font-family: Mattone;
   font-size: 40px;
+  font-weight: bold;
   margin-bottom: 20px;
 `;
 

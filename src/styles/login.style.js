@@ -8,7 +8,7 @@ const LoginStyle = styled.div`
 
 const LoginForm = styled.form`
   display: flex;
-  color: black;
+  color: #101525;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -21,9 +21,9 @@ const LoginForm = styled.form`
 `;
 
 const LoginTitle = styled.div`
-  color: #101425;
   font-family: Mattone;
   font-size: 40px;
+  font-weight: bold;
   margin-bottom: 20px;
 `;
 

@@ -12,6 +12,7 @@ const ProfileForm = styled.form`
 const ProfileTitle = styled.div`
   font-size: 40px;
   font-family: Mattone;
+  font-weight: bold;
   justify-content: center;
   margin-bottom: 20px;
   margin-left: 130px;
