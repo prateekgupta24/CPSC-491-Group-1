@@ -22,13 +22,13 @@ const Login = () => {
   // google sign in
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const [userEmail, setUserEmail] = useState("");
+  const [setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [logged, setLogged] = useState(false);
   const [userJwt, setUserJwt] = useState("");
   const [loading, setLoading] = useState(false);
   // const [userAuth, setUserAuth] = useState(false);
-  const { auth, setAuth } = useContext(authContext);
+  const { setAuth } = useContext(authContext);
   // const { user, setUser } = useContext(authContext);
   // const { userEmail, setUserEmail } = useContext(authContext);
   // const { userJwt, setUserJwt } = useContext(authContext);
@@ -140,7 +140,6 @@ const Login = () => {
         <ArrowBackIosIcon style={{}} />
       </IconButton>
       <LoginForm onSubmit={handleSubmit}>
-
         <LoginTitle>Log in to FitBud</LoginTitle>
         <Box
           component="LoginForm"
