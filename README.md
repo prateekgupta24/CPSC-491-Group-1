@@ -1,9 +1,10 @@
 # Prerequisites
-- node.js
+- install node.js
   - https://nodejs.org/en/download/
-- yarn
+- install yarn
   - npm install --global yarn
-- yarn install
+- type command "yarn install"
+  - make sure your working directory is where the yarn.lock file is
   - as long as you download the correct package.json and yarn.lock this will download every package for you
 
 # To start the Front-End
