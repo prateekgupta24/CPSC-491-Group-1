@@ -204,6 +204,7 @@ const UserProfile = () => {
                 name="address"
                 inputRef={inputRef}
               />
+            </div>
             //<div id="state">
               //<TextField
                 //id="outlined-state"
@@ -211,7 +212,7 @@ const UserProfile = () => {
                 //name="state"
                 //inputProps={{ maxLength: 2 }}
                 //style={{ width: "7ch" }}
-              ///>
+              />
               //<TextField id="outlined-city" label="City" name="city" />
             //</div>
             <div id="gym">
