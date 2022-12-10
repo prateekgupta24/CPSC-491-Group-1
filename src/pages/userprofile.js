@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Profile,
   ProfileForm,
@@ -31,6 +31,21 @@ const UserProfile = () => {
       mode: "dark",
     },
   });
+  
+  const autoCompleteRef = useRef();
+  const inputRef = useRef();
+  const options = {
+     componentRestrictions: { country: "us" },
+     fields: ["address_components", "geometry", "icon", "name"],
+     types: ["establishment"]
+    };
+
+  useEffect(() => {
+     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+      inputRef.current,
+      options
+     );
+    }, []);
 
   const handleSubmit = (event) => {
     setLoading(true);
@@ -45,8 +60,9 @@ const UserProfile = () => {
       height:
         event.target.heightft.value + "'" + event.target.heightin.value + '"',
       weight: event.target.weight.value,
-      state: event.target.state.value,
-      city: event.target.city.value,
+      address: event.target.address.value,
+      //state: event.target.state.value,
+      //city: event.target.city.value,
       gym: event.target.gym.value,
     };
     axios
@@ -181,17 +197,23 @@ const UserProfile = () => {
                 />
               </div>
             </FormControl>
-
-            <div id="state">
+            <div id="address">
               <TextField
-                id="outlined-state"
-                label="State"
-                name="state"
-                inputProps={{ maxLength: 2 }}
-                style={{ width: "7ch" }}
+                id="address"
+                label="Enter Address"
+                name="address"
+                inputRef={inputRef}
               />
-              <TextField id="outlined-city" label="City" name="city" />
-            </div>
+            //<div id="state">
+              //<TextField
+                //id="outlined-state"
+                //label="State"
+                //name="state"
+                //inputProps={{ maxLength: 2 }}
+                //style={{ width: "7ch" }}
+              ///>
+              //<TextField id="outlined-city" label="City" name="city" />
+            //</div>
             <div id="gym">
               <TextField id="outlined-gym" type="text" label="Gym" name="gym" />
             </div>
