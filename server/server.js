@@ -34,7 +34,6 @@ db.mongoose
 
 // get mongodb id?
 async function getID(email) {
-  console.log(email);
   const userID = await db.userprofile.findOne({ email: email });
   return userID._id;
 }
@@ -74,9 +73,9 @@ app.post("/login", async (req, res) => {
   const user = req.body;
   db.userprofile.findOne({ email: user.email }, function (err, result) {
     if (err) throw err;
-    console.log(result);
+    // console.log(result);
     if (result) {
-      console.log("exists");
+      //console.log("exists");
       const accessToken = jwt.sign(
         user,
         "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
@@ -93,17 +92,25 @@ app.post("/login", async (req, res) => {
 app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
+  // this removes height if user inputted it as empty because userprofile.js will assign it as '"
+  if (user.height === "'\"") {
+    delete user.height;
+  }
   // updates userprofile/adds with user
   const userID = await getID(user["email"]);
-  console.log(userID);
-  db.userprofile.updateOne(
-    { _id: userID },
-    { $set: user },
-    function (err, result) {
-      if (err) throw err;
-      console.log(result);
+  delete user.email;
+  //console.log(userID);
+  // loop through each name and if key exists, update it.
+  for (const key in user) {
+    if (!user[key]) {
+      delete user[key];
     }
-  );
+  }
+  db.userprofile.updateOne({ _id: userID }, { $set: user }, function (err) {
+    if (err) throw err;
+    console.log("updated profile");
+  });
+
   res.json(user);
 });
 require("./app/routes/user.routes")(app);
@@ -111,13 +118,21 @@ require("./app/routes/user.routes")(app);
 app.put("/preferences", async (req, res) => {
   // update the preferences
   const preference = req.body;
-  const userID = getID(user["email"]);
+  const userID = await getID(preference["email"]);
+  delete preference.email;
+  //console.log(preferenceID);
+  // loop through each name and if key exists, update it.
+  for (const key in preference) {
+    if (!preference[key]) {
+      delete preference[key];
+    }
+  }
   db.userprofile.updateOne(
     { _id: userID },
     { $set: preference },
-    function (err, result) {
+    function (err) {
       if (err) throw err;
-      console.log(result);
+      console.log("updated profile");
     }
   );
   res.json(userprofile);
@@ -129,3 +144,6 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+// matching algo?
+function match(email) {}
