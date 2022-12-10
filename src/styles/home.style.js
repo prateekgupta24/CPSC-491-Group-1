@@ -17,10 +17,11 @@ const HomeStyle = styled.div`
 const TitleStyle = styled.div`
   display: flex;
   font-family: Mattone;
+  font-weight: bold;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 40px;
+  padding-top: 60px;
   scroll-margin-top: 60.5px;
 `;
 
