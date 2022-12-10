@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Profile,
   ProfileForm,
@@ -20,9 +20,11 @@ import axios from "axios";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const UserProfile = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   //const [post, setPost] = useState(null);
   const darkTheme = createTheme({
@@ -32,8 +34,8 @@ const UserProfile = () => {
   });
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
-    // get email from jwt
 
     const data = {
       email: localStorage.getItem("email"),
@@ -52,6 +54,7 @@ const UserProfile = () => {
       .post("http://localhost:8080/userprofile", data)
       .then((response) => {
         console.log(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -179,22 +182,31 @@ const UserProfile = () => {
                 />
               </div>
             </FormControl>
-            <div id="location">
-              <TextField id="outlined-state" label="State" name="state" />
 
+            <div id="state">
+              <TextField
+                id="outlined-state"
+                label="State"
+                name="state"
+                inputProps={{ maxLength: 2 }}
+                style={{ width: "7ch" }}
+              />
               <TextField id="outlined-city" label="City" name="city" />
             </div>
             <div id="gym">
               <TextField id="outlined-gym" type="text" label="Gym" name="gym" />
             </div>
           </Box>
-          <Button
+          <LoadingButton
             type="submit"
+            size="small"
+            loading={loading}
+            loadingPosition="end"
             variant="contained"
-            style={{ marginLeft: "8px" }}
+            sx={{ width: "11ch", marginBottom: "7px" }}
           >
             Save
-          </Button>
+          </LoadingButton>
         </ProfileForm>
       </ThemeProvider>
     </Profile>

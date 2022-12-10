@@ -25,6 +25,7 @@ const ProfileSection = styled.div`
 const ProfileInput = styled.input.attrs({ type: "text" })`
   margin-left: 5px;
 `;
+
 const ProfileSelect = styled.select`
   margin-left: 5px;
 `;
