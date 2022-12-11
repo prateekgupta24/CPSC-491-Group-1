@@ -206,7 +206,7 @@ const UserProfile = () => {
               />
             </div>
             <div id="gym">
-              <TextField id="outlined-gym" type="text" label="Gym" name="gym" />
+              <TextField id="outlined-gym" type="text" label="Gym" name="gym" inputRef={inputRef}/>
             </div>
           </Box>
           <LoadingButton
