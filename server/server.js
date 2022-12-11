@@ -194,6 +194,18 @@ app.post("/match", async (req, res) => {
   const userEmail = await getParsedJwt(req.body);
   const userID = await getID(userEmail);
   const userMatch = await db.userprofile.find({ _id: { $ne: userID } });
-  console.log(userMatch);
+  const userInfo = await db.userprofile.findOne({ email: userEmail });
+  const userGym = userInfo.gym;
+  if (userGym) {
+    // if user's location is in the database
+    console.log(userGym);
+    // TODO:
+    // loop through userMatch.gym and calculate distance between userGym and userMatch.gym
+    // return a list of all gyms in sorted order from closest to furthest
+  } else {
+    res.json("input location");
+  }
+
+  // console.log(userMatch);
   // find distance between user and everone in userMatch
 });
