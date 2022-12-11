@@ -125,7 +125,6 @@ app.post("/login", async (req, res) => {
 app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
-  console.log("in userprofile");
 
   // this removes height if user inputted it as empty because userprofile.js will assign it as '"
   if (user.height === "'\"") {
@@ -154,7 +153,9 @@ require("./app/routes/user.routes")(app);
 app.put("/preferences", async (req, res) => {
   // update the preferences
   const preference = req.body;
-  const userID = await getParsedJwt(preference["email"]);
+  const userEmail = await getParsedJwt(preference.jwt);
+  delete user.jwt;
+  const userID = await getID(userEmail);
   delete preference.email;
   //console.log(preferenceID);
   // loop through each name and if key exists, update it.
@@ -168,7 +169,7 @@ app.put("/preferences", async (req, res) => {
     { $set: preference },
     function (err) {
       if (err) throw err;
-      console.log("updated profile");
+      console.log("updated preference");
     }
   );
   res.json(userprofile);
@@ -183,17 +184,17 @@ app.listen(PORT, () => {
 
 // matching algo?
 app.post("/match", async (req, res) => {
-  console.log("in match");
   // TODO:
   // get entire database
   // compare distance to user
   // grab a few users with closest distance
+  // get user preferences
   const userEmail = await getParsedJwt(req.body);
   const userID = await getID(userEmail);
   console.log(userID);
-  // db.userprofile.find({ _id: { $not: userID } }, function (err, result) {
-  //   if (err) throw err;
-  //   console.log(result);
-  //   res.json(result);
-  // });
+  db.userprofile.find({ _id: { $ne: userID } }, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
 });
