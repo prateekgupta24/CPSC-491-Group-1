@@ -14,7 +14,7 @@ module.exports = (mongoose) => {
         state: String,
         address: String,
         //city: String,
-        //gym: String,
+        gym: String,
 
         workoutstyle: String,
       },

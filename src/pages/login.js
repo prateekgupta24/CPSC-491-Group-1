@@ -40,7 +40,10 @@ const Login = () => {
     const decodedJwt = jwt_decode(response.credential);
     //console.log(decodedJwt);
     document.getElementById("signInDiv").hidden = true;
-    const data = { google: true, email: decodedJwt.email };
+    const data = {
+      google: true,
+      email: decodedJwt.email,
+    };
     axios
       .post("http://localhost:8080/login", data)
       .then((response) => {
@@ -51,12 +54,13 @@ const Login = () => {
           // localStorage.setItem("token", JSON.stringify(response.data));
           // localStorage.setItem("email", decodedJwt.email);
           // localStorage.setItem("auth", true);
+
           localStorage.setItem("jwt", JSON.stringify(response.data));
           document.getElementById("signInDiv").hidden = true;
           setLoading(false);
           setJwt(JSON.stringify(response.data));
           console.log(jwt);
-          //navigate(-1);
+          navigate(-1);
         } else {
           //setAuth(false);
           alert("incorect login");

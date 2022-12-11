@@ -19,6 +19,7 @@ const {
   useInRouterContext,
   UNSAFE_NavigationContext,
 } = require("react-router-dom");
+const { json } = require("body-parser");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
@@ -32,9 +33,12 @@ db.mongoose
     process.exit();
   });
 
-// get mongodb id?
-async function getID(email) {
-  const userID = await db.userprofile.findOne({ email: email });
+// get mongodb id
+async function getID(jwt) {
+  // debug jwt and get email
+  parsedJwt = JSON.parse(jwt);
+  const userID = await db.userprofile.findOne({ email: parsedJwt.email });
+  console.log(userID);
   return userID._id;
 }
 
@@ -71,7 +75,7 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   // check if email exists in database
   const user = req.body;
-  if (!req.body.google) {
+  if (!user.google) {
     db.userprofile.findOne({ email: user.email }, function (err, result) {
       if (err) throw err;
       // console.log(result);
@@ -86,34 +90,52 @@ app.post("/login", async (req, res) => {
         res.json("");
       }
     });
-  } else if (req.body.google) {
-    const accessToken = jwt.sign(
-      user,
-      "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
-    );
-    res.json({ accessToken: accessToken });
+  } else if (user.google) {
+    // if google sign in
+    db.userprofile.findOne({ email: user.email }, async function (err, result) {
+      // checks if email exists
+      // check if email exists in database
+      if (err) throw err;
+      if (result) {
+        // console.log(result); // outputs result if exists
+        const accessToken = jwt.sign(
+          result.email,
+          "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
+        );
+        res.json({ accessToken: accessToken });
+      }
+      if (!result) {
+        // if email doesn't exist, add to database
+        const newUser = new db.userprofile(user);
+        await newUser.save(); // saves to mongodb
+        res.json(newUser);
+      } else {
+        res.json("");
+      }
+    });
   }
 });
 
 // user profile settings
-// TODO: figure out a way to update only if its empty
 app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
+  console.log("in userprofile");
+  console.log(user);
   // this removes height if user inputted it as empty because userprofile.js will assign it as '"
   if (user.height === "'\"") {
     delete user.height;
   }
   // updates userprofile/adds with user
-  const userID = await getID(user["email"]);
-  delete user.email;
-  //console.log(userID);
+  const userID = await getID(user.jwt);
+  delete user.jwt;
   // loop through each name and if key exists, update it.
   for (const key in user) {
     if (!user[key]) {
       delete user[key];
     }
   }
+  console.log(user);
   db.userprofile.updateOne({ _id: userID }, { $set: user }, function (err) {
     if (err) throw err;
     console.log("updated profile");
@@ -154,4 +176,9 @@ app.listen(PORT, () => {
 });
 
 // matching algo?
-function match(email) {}
+function match(email) {
+  // TODO:
+  // get entire database
+  // compare distance to user
+  // grab a few users with closest distance
+}

@@ -24,13 +24,14 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import emailjs from "@emailjs/browser";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { authContext } from "../services/authContext";
+import jwt_decode from "jwt-decode";
 
 const Home = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
   // const { auth, setAuth } = useContext(authContext);
   const { jwt, setJwt } = useContext(authContext);
-
+  //console.log(jwt_decode(jwt));
   const darkTheme = createTheme({
     palette: {
       mode: "dark",
@@ -66,12 +67,12 @@ const Home = () => {
   };
   return (
     <>
-      {jwt ? (
-        <NavBar className="NavBar" />
-      ) : (
-        <NotAuthNB className="NonAuthNavbar"></NotAuthNB>
-      )}
       <HomeStyle id="home">
+        {jwt ? (
+          <NavBar className="NavBar" />
+        ) : (
+          <NotAuthNB className="NonAuthNavbar"></NotAuthNB>
+        )}
         <TitleStyle className="title">
           <h1>Welcome to FitBud</h1>
           <div>
@@ -82,7 +83,6 @@ const Home = () => {
             />
           </div>
         </TitleStyle>
-
         {textData.map((data) => {
           return (
             <>

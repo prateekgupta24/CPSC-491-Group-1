@@ -31,28 +31,28 @@ const UserProfile = () => {
       mode: "dark",
     },
   });
-  
+
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
-     componentRestrictions: { country: "us" },
-     fields: ["address_components", "geometry", "icon", "name"],
-     types: ["establishment"]
-    };
+    componentRestrictions: { country: "us" },
+    fields: ["address_components", "geometry", "icon", "name"],
+    types: ["establishment"],
+  };
 
   useEffect(() => {
-     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
       options
-     );
-    }, []);
+    );
+  }, []);
 
   const handleSubmit = (event) => {
     setLoading(true);
     event.preventDefault();
 
     const data = {
-      email: localStorage.getItem("email"),
+      jwt: localStorage.getItem("jwt"),
       fname: event.target.fname.value,
       lname: event.target.lname.value,
       age: event.target.age.value,
@@ -60,7 +60,7 @@ const UserProfile = () => {
       height:
         event.target.heightft.value + "'" + event.target.heightin.value + '"',
       weight: event.target.weight.value,
-      address: event.target.address.value,
+      // address: event.target.address.value,
       //state: event.target.state.value,
       //city: event.target.city.value,
       gym: event.target.gym.value,
@@ -197,16 +197,15 @@ const UserProfile = () => {
                 />
               </div>
             </FormControl>
-            <div id="address">
+
+            <div id="gym">
               <TextField
-                id="address"
-                label="Enter Address"
-                name="address"
+                id="outlined-gym"
+                type="text"
+                label="Gym"
+                name="gym"
                 inputRef={inputRef}
               />
-            </div>
-            <div id="gym">
-              <TextField id="outlined-gym" type="text" label="Gym" name="gym" inputRef={inputRef}/>
             </div>
           </Box>
           <LoadingButton
