@@ -89,7 +89,7 @@ const NavBar = () => {
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link
             style={{ color: "black", textDecoration: "none" }}
-            to="/yelperhome"
+            to="/yelper"
           >
             <Links>Yelper</Links>
           </Link>
