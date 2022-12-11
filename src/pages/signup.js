@@ -12,9 +12,10 @@ import { authContext } from "../services/authContext";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(authContext);
+  const { jwt, setJwt } = useContext(authContext);
 
   const handleSubmit = (event) => {
+    localStorage.clear();
     event.preventDefault();
     const data = {
       email: event.target.email.value,
@@ -27,9 +28,8 @@ const Signup = () => {
         if (!response.data) {
           alert("already exists");
         } else {
-          localStorage.setItem("email", data["email"]);
-          localStorage.setItem("auth", true);
-          setAuth(true);
+          localStorage.setItem("jwt", JSON.stringify(response.data));
+
           navigate("/");
         }
       })

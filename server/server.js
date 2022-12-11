@@ -36,15 +36,12 @@ db.mongoose
 // gets token and returns the parsed JWT
 async function getParsedJwt(token) {
   // decode jwt and get email
-  console.log("in getParsedJwt");
   parsedJwt = jwt.decode(token.accessToken);
-  console.log(parsedJwt);
   return parsedJwt;
 }
 
 // get mongodb id from email
 async function getID(email) {
-  console.log(email);
   const userID = await db.userprofile.findOne({ email: email });
   return userID._id;
 }
@@ -60,12 +57,18 @@ app.post("/signup", async (req, res) => {
     // check if email exists in database
     if (err) throw err;
     // console.log(result); // outputs result if exists
+    if (result) {
+      //console.log("exists");
+      const accessToken = jwt.sign(
+        result.email,
+        "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
+      );
+      res.json({ accessToken: accessToken });
+    }
     if (!result) {
       const newUser = new db.userprofile(user);
       await newUser.save(); // saves to mongodb
       res.json(newUser);
-    } else {
-      res.json("");
     }
   });
 });
@@ -182,19 +185,15 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// matching algo?
+// matching algo
 app.post("/match", async (req, res) => {
   // TODO:
-  // get entire database
   // compare distance to user
   // grab a few users with closest distance
-  // get user preferences
+  // get user preferences ??
   const userEmail = await getParsedJwt(req.body);
   const userID = await getID(userEmail);
-  console.log(userID);
-  db.userprofile.find({ _id: { $ne: userID } }, function (err, result) {
-    if (err) throw err;
-    console.log(result);
-    res.json(result);
-  });
+  const userMatch = await db.userprofile.find({ _id: { $ne: userID } });
+  console.log(userMatch);
+  // find distance between user and everone in userMatch
 });

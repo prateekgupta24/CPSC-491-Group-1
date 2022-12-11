@@ -59,7 +59,7 @@ const Login = () => {
           setLoading(false);
           setJwt(JSON.stringify(response.data));
           document.getElementById("signInDiv").hidden = true;
-          //navigate(-1);
+          //navigate("/");
         } else {
           //setAuth(false);
           alert("incorrect login");
@@ -128,7 +128,7 @@ const Login = () => {
           event.target.reset();
           setJwt(JSON.stringify(response.data));
           setLoading(false);
-          //navigate(-1);
+          // navigate("/");
         } else {
           //setAuth(false);
           alert("incorect login");
