@@ -37,6 +37,7 @@ const Login = () => {
     "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
 
   function handleCallbackResponse(response) {
+    localStorage.clear();
     const decodedJwt = jwt_decode(response.credential);
     //console.log(decodedJwt);
     document.getElementById("signInDiv").hidden = true;
@@ -54,16 +55,15 @@ const Login = () => {
           // localStorage.setItem("token", JSON.stringify(response.data));
           // localStorage.setItem("email", decodedJwt.email);
           // localStorage.setItem("auth", true);
-
+          console.log(JSON.stringify(response.data));
           localStorage.setItem("jwt", JSON.stringify(response.data));
-          document.getElementById("signInDiv").hidden = true;
           setLoading(false);
           setJwt(JSON.stringify(response.data));
-          console.log(jwt);
+          document.getElementById("signInDiv").hidden = true;
           navigate(-1);
         } else {
           //setAuth(false);
-          alert("incorect login");
+          alert("incorrect login");
         }
       })
       .catch((error) => {
@@ -97,6 +97,7 @@ const Login = () => {
   }, [google_cid]);
 
   const handleSubmit = (event) => {
+    localStorage.clear();
     setLoading(true);
     event.preventDefault();
     //console.log(password); // here to just get rid of warning

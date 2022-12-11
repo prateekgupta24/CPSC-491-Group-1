@@ -31,6 +31,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   // const { auth, setAuth } = useContext(authContext);
   const { jwt, setJwt } = useContext(authContext);
+  console.log(jwt);
   //console.log(jwt_decode(jwt));
   const darkTheme = createTheme({
     palette: {

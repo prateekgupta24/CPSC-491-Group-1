@@ -11,6 +11,7 @@ import UserPreferences from "./pages/userpreferences";
 import YelperHome from "./pages/yelper";
 import YelperDetails from "./pages/yelperdetails";
 import { authContext } from "./services/authContext";
+import Match from "./pages/match";
 function App() {
   const [jwt, setJwt] = useState(false);
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/userpreferences" element={<UserPreferences />} />
           <Route path="/yelper" element={<YelperHome />} />
           <Route path="/yelperdetails" element={<YelperDetails />} />
+          <Route path="/match" element={<Match />} />
         </Routes>
       </authContext.Provider>
     </Router>

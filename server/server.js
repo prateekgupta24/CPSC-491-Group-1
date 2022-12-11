@@ -34,12 +34,16 @@ db.mongoose
   });
 
 // get mongodb id
-async function getID(jwt) {
-  // debug jwt and get email
+async function getParsedJwt(jwt) {
+  // debug jwt and get emailf
+  console.log("in getParsedJwt");
+  console.log(jwt);
   parsedJwt = JSON.parse(jwt);
-  const userID = await db.userprofile.findOne({ email: parsedJwt.email });
-  console.log(userID);
-  return userID._id;
+
+  console.log(parsedJwt);
+  const user = await db.userprofile.findOne({ email: parsedJwt.email });
+  console.log(user);
+  return user;
 }
 
 // simple route
@@ -82,7 +86,7 @@ app.post("/login", async (req, res) => {
       if (result) {
         //console.log("exists");
         const accessToken = jwt.sign(
-          user,
+          result.email,
           "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
         );
         res.json({ accessToken: accessToken });
@@ -127,7 +131,8 @@ app.post("/userprofile", async (req, res) => {
     delete user.height;
   }
   // updates userprofile/adds with user
-  const userID = await getID(user.jwt);
+  const user2 = await getParsedJwt(user.jwt);
+  const userID = user2._id;
   delete user.jwt;
   // loop through each name and if key exists, update it.
   for (const key in user) {
@@ -148,7 +153,7 @@ require("./app/routes/user.routes")(app);
 app.put("/preferences", async (req, res) => {
   // update the preferences
   const preference = req.body;
-  const userID = await getID(preference["email"]);
+  const userID = await getParsedJwt(preference["email"]);
   delete preference.email;
   //console.log(preferenceID);
   // loop through each name and if key exists, update it.
@@ -176,9 +181,18 @@ app.listen(PORT, () => {
 });
 
 // matching algo?
-function match(email) {
+app.post("/match", async (req, res) => {
+  console.log("in match");
+  console.log(req.body);
   // TODO:
   // get entire database
   // compare distance to user
   // grab a few users with closest distance
-}
+  const userID = await getParsedJwt(req.body);
+
+  db.userprofile.find({ _id: { $not: userID } }, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
