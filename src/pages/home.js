@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import {
   HomeStyle,
   TitleStyle,
@@ -43,7 +43,12 @@ const Home = () => {
   //   // localstorage sets boolean values as strings
   //   setAuth(true);
   // }
-
+  useEffect(() => {
+    const lsJwt = localStorage.getItem("jwt");
+    if (lsJwt) {
+      setJwt(lsJwt);
+    }
+  });
   const sendEmail = (event) => {
     event.preventDefault();
     setLoading(true);

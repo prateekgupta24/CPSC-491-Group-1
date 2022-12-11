@@ -3,6 +3,8 @@ import axios from "axios";
 
 const Match = () => {
   const jwt = JSON.parse(localStorage.getItem("jwt"));
+  console.log(jwt);
+  // const data = {jwt: jwt.}
   const test = () => {
     axios
       .post("http://localhost:8080/match", jwt)

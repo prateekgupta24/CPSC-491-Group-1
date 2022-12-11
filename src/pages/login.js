@@ -55,7 +55,6 @@ const Login = () => {
           // localStorage.setItem("token", JSON.stringify(response.data));
           // localStorage.setItem("email", decodedJwt.email);
           // localStorage.setItem("auth", true);
-          console.log(JSON.stringify(response.data));
           localStorage.setItem("jwt", JSON.stringify(response.data));
           setLoading(false);
           setJwt(JSON.stringify(response.data));
@@ -84,6 +83,10 @@ const Login = () => {
     console.log("signed out");
   }
   useEffect(() => {
+    const lsJwt = localStorage.getItem("jwt");
+    if (lsJwt) {
+      setJwt(lsJwt);
+    }
     /* global google */
 
     google.accounts.id.initialize({

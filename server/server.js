@@ -33,22 +33,21 @@ db.mongoose
     process.exit();
   });
 
-// get mongodb id
-async function getParsedJwt(jwt) {
-  // debug jwt and get email
+// gets token and returns the parsed JWT
+async function getParsedJwt(token) {
+  // decode jwt and get email
   console.log("in getParsedJwt");
-  //console.log(jwt);
-  // parsedJwt = JSON.parse(jwt.accessToken);
-  parsedJwt = JSON.parse(
-    Buffer.from(jwt.accessToken.split(".")[1], "base64").toString()
-  );
-  //console.log(parsedJwt);
-  // const user = await db.userprofile.findOne({ email: parsedJwt.email });
-  // console.log(user);
-  console.log("out");
-  return user;
+  parsedJwt = jwt.decode(token.accessToken);
+  console.log(parsedJwt);
+  return parsedJwt;
 }
 
+// get mongodb id from email
+async function getID(email) {
+  console.log(email);
+  const userID = await db.userprofile.findOne({ email: email });
+  return userID._id;
+}
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to fitbud application." });
@@ -127,14 +126,15 @@ app.post("/userprofile", async (req, res) => {
   // removes first and last name from body
   const user = req.body;
   console.log("in userprofile");
-  console.log(user);
+
   // this removes height if user inputted it as empty because userprofile.js will assign it as '"
   if (user.height === "'\"") {
     delete user.height;
   }
   // updates userprofile/adds with user
-  const user2 = await getParsedJwt(user.jwt);
-  const userID = user2._id;
+  console.log(user);
+  const userEmail = await getParsedJwt(user.jwt);
+  const userID = await getID(userEmail);
   delete user.jwt;
   // loop through each name and if key exists, update it.
   for (const key in user) {
@@ -142,7 +142,6 @@ app.post("/userprofile", async (req, res) => {
       delete user[key];
     }
   }
-  console.log(user);
   db.userprofile.updateOne({ _id: userID }, { $set: user }, function (err) {
     if (err) throw err;
     console.log("updated profile");
@@ -189,8 +188,9 @@ app.post("/match", async (req, res) => {
   // get entire database
   // compare distance to user
   // grab a few users with closest distance
-  const userID = await getParsedJwt(req.body);
-
+  const userEmail = await getParsedJwt(req.body);
+  const userID = await getID(userEmail);
+  console.log(userID);
   // db.userprofile.find({ _id: { $not: userID } }, function (err, result) {
   //   if (err) throw err;
   //   console.log(result);

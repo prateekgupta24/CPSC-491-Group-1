@@ -52,7 +52,7 @@ const UserProfile = () => {
     event.preventDefault();
 
     const data = {
-      jwt: localStorage.getItem("jwt"),
+      jwt: JSON.parse(localStorage.getItem("jwt")),
       fname: event.target.fname.value,
       lname: event.target.lname.value,
       age: event.target.age.value,
