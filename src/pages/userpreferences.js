@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Preferences, PreferencesForm, PreferencesTitle } from "../styles/userpreferences.style";
 import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
@@ -26,6 +26,21 @@ const UserPreferences = () => {
      mode: "dark",
    },
  });
+ 
+ const autoCompleteRef = useRef();
+  const inputRef = useRef();
+  const options = {
+     componentRestrictions: { country: "us" },
+     fields: ["address_components", "geometry", "icon", "name"],
+     types: ["locality"]
+    };
+
+  useEffect(() => {
+     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+      inputRef.current,
+      options
+     );
+    }, []);
  
  const handleSubmit = (event) => {
    event.preventDefault();
@@ -84,6 +99,7 @@ const UserPreferences = () => {
                type="text"
                label="My City"
                name="myCity"
+               inputRef={inputRef}
              />
            </div>
            <div id="age">
