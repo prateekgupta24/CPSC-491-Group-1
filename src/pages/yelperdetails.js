@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, Carousel, Container, Row, Tab, Table, Tabs } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 //import { useJsApiLoader, InfoWindow, Marker, GoogleMap } from '@react-google-maps/api'
-import { GoogleApiWrapper, InfoWindow, Marker, Map } from 'google-maps-react'
+//import { GoogleApiWrapper, InfoWindow, Marker, Map } from 'google-maps-react'
 import { IoIosStarHalf, IoIosStarOutline, IoIosStar } from 'react-icons/io'
 import { FaDollarSign } from 'react-icons/fa'
 import { MdLocalPhone, MdLocationOn } from 'react-icons/md'
@@ -16,9 +16,9 @@ const anywhere = 'https://nameless-scrubland-76048.herokuapp.com/'
 const YELP_API_KEY = 'UqRhpTEh-aysB_Q3uyNQuCDrijHuqrAzZ9Qd_AhQJJ-vvgRJzKLmIorlCJYqsfhEoCPdT8oXT8EkCOQSqlWHG4Io5pfd2pxQlWxMDVAmYjVzKZlnHJfjnnxSy5Z0Y3Yx'
 
 // Enter your own Google Maps API key here
-const MAPS_API_KEY = ''
+//const MAPS_API_KEY = ''
 
-const Details = (props) => {
+const Details = () => {
     //const {} = useJsApiLoader({
       //googleMapsApiKey: "YOUR_API_KEY" 
    // })
@@ -29,9 +29,9 @@ const Details = (props) => {
   const [restaurant, setRestaurant] = useState(location.state.detailsObject)
 
   // Map stuff
-  const [showingInfoWindow, setShowInfoWindow] = useState(false) // Hides or shows the infoWindow
-  const [activeMarker, setActiveMarker] = useState({}) // Shows the active marker upon click
-  const [selectedPlace, setSelectedPlace] = useState({}) // Shows the infoWindow to the selected place upon a marker
+  //const [showingInfoWindow, setShowInfoWindow] = useState(false) // Hides or shows the infoWindow
+  //const [activeMarker, setActiveMarker] = useState({}) // Shows the active marker upon click
+  //const [selectedPlace, setSelectedPlace] = useState({}) // Shows the infoWindow to the selected place upon a marker
 
   // Execute this when site loads
   useEffect(() => {
@@ -76,26 +76,26 @@ const Details = (props) => {
   )
 
   // When map marker is clicked
-  const onMarkerClick = (props, marker, e) => {
-    setSelectedPlace(props)
-    setActiveMarker(marker)
-    setShowInfoWindow(true)
-  }
+  //const onMarkerClick = (props, marker, e) => {
+    //setSelectedPlace(props)
+    //setActiveMarker(marker)
+    //setShowInfoWindow(true)
+  //}
 
   // When map infoWindow is closed
-  const onClose = props => {
-    if (showingInfoWindow) {
-      setActiveMarker(null)
-      setShowInfoWindow(false)
-    }
-  }
+  //const onClose = props => {
+    //if (showingInfoWindow) {
+      //setActiveMarker(null)
+      //setShowInfoWindow(false)
+    //}
+  //}
 
   // Style for map
-  const mapStyle = {
-    width: '100%',
-    height: '400px',
-    position: 'relative'
-  }
+  //const mapStyle = {
+    //width: '100%',
+    //height: '400px',
+    //position: 'relative'
+  //}
 
   // Find whether number is float or not
   function isFloat (n) {
@@ -343,51 +343,6 @@ const Details = (props) => {
         </Row>
         <br />
 
-        {/* Google Maps */}
-        <Row className='justify-content-md-center'>
-          <Card style={{
-            width: '100%'
-          }}
-          >
-            <Card.Header>
-              <center><h1>{restaurant.name}</h1></center>
-            </Card.Header>
-            <Card.Body style={{
-              padding: '0rem'
-            }}
-            >
-              {/* Display Map */}
-              <Map
-                google={props.google}
-                style={mapStyle}
-                containerStyle={mapStyle}
-                zoom={20}
-                initialCenter={{
-                  lat: restaurant.coordinates.latitude,
-                  lng: restaurant.coordinates.longitude
-                }}
-              >
-                {/* Marker for map */}
-                <Marker
-                  title={`${restaurant.name}`} // mouse over
-                  name={`${restaurant.name}`}
-                  onClick={onMarkerClick}
-                  position={{ lat: restaurant.coordinates.latitude, lng: restaurant.coordinates.longitude }}
-                />
-
-                {/* Info Window for when marker is clicked */}
-                <InfoWindow
-                  marker={activeMarker}
-                  visible={showingInfoWindow}
-                  onClose={onClose}
-                >
-                  <h4>{restaurant.name}</h4>
-                </InfoWindow>
-              </Map>
-            </Card.Body>
-          </Card>
-        </Row>
-
         {/* Restaurant Details */}
         <Row style={{
           marginTop: '16px'
@@ -441,7 +396,7 @@ const Details = (props) => {
   )
 }
 
-export default GoogleApiWrapper({
-  apiKey: `${MAPS_API_KEY}`
-})(Details)
-//export default Details;
+//export default GoogleApiWrapper({
+  //apiKey: `${MAPS_API_KEY}`
+//})(Details)
+export default Details;
