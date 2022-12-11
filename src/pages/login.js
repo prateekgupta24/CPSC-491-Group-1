@@ -22,13 +22,12 @@ const Login = () => {
   // google sign in
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const [setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [logged, setLogged] = useState(false);
-  const [userJwt, setUserJwt] = useState("");
   const [loading, setLoading] = useState(false);
   // const [userAuth, setUserAuth] = useState(false);
-  const { setAuth } = useContext(authContext);
+  // const { auth, setAuth } = useContext(authContext);
+  const { jwt, setJwt } = useContext(authContext);
   // const { user, setUser } = useContext(authContext);
   // const { userEmail, setUserEmail } = useContext(authContext);
   // const { userJwt, setUserJwt } = useContext(authContext);
@@ -38,39 +37,47 @@ const Login = () => {
     "13273346811-4o7mkcpdoaj7vvf426fpspc2gkisubjf.apps.googleusercontent.com";
 
   function handleCallbackResponse(response) {
-    var userToken = jwt_decode(response.credential);
-    console.log("JWT ID token: " + response.credential);
-    setUserJwt(userToken);
+    const decodedJwt = jwt_decode(response.credential);
+    //console.log(decodedJwt);
     document.getElementById("signInDiv").hidden = true;
-    setLogged(true);
-    setAuth(true);
+    const data = { google: true, email: decodedJwt.email };
+    axios
+      .post("http://localhost:8080/login", data)
+      .then((response) => {
+        //console.log(JSON.stringify(response.data));
+
+        if (response.data) {
+          //setAuth(true);
+          // localStorage.setItem("token", JSON.stringify(response.data));
+          // localStorage.setItem("email", decodedJwt.email);
+          // localStorage.setItem("auth", true);
+          localStorage.setItem("jwt", JSON.stringify(response.data));
+          document.getElementById("signInDiv").hidden = true;
+          setLoading(false);
+          setJwt(JSON.stringify(response.data));
+          console.log(jwt);
+          //navigate(-1);
+        } else {
+          //setAuth(false);
+          alert("incorect login");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
   }
 
   function handleSignOut() {
+    setLoading(false);
     setUser({});
     setUserEmail("");
     setPassword("");
-    setLogged(false);
-    setAuth(false);
+    setJwt("");
+    //setAuth(false);
     localStorage.clear();
-    // const data = {
-    //   email: userEmail,
-    //   pword: password,
-    // };
-    // axios
-    //   .post("http://localhost:8080/logout", data)
-    //   .then((response) => {
-    //     console.log(JSON.stringify(response.data));
-    //     localStorage.setItem("token", JSON.stringify(response.data));
-    //     setLogged(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     return;
-    //   });
     document.getElementById("signInDiv").hidden = false;
     console.log("signed out");
-    console.log(user); // delete later, just getting rid of stupid warning
   }
   useEffect(() => {
     /* global google */
@@ -88,12 +95,12 @@ const Login = () => {
   const handleSubmit = (event) => {
     setLoading(true);
     event.preventDefault();
-    console.log(event.target.email.value);
-    console.log(password); // here to just get rid of warning
+    //console.log(password); // here to just get rid of warning
     setUserEmail(event.target.email.value);
     setPassword(event.target.password.value);
 
     const data = {
+      google: false,
       email: event.target.email.value,
       pword: event.target.password.value,
     };
@@ -101,22 +108,21 @@ const Login = () => {
     axios
       .post("http://localhost:8080/login", data)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
 
         if (response.data) {
-          setLogged(true);
-          setAuth(true);
+          //setAuth(true);
           // localStorage.setItem("token", JSON.stringify(response.data));
-          localStorage.setItem("email", event.target.email.value);
-          localStorage.setItem("auth", true);
+          // localStorage.setItem("email", event.target.email.value);
+          // localStorage.setItem("auth", true);
+          localStorage.setItem("jwt", JSON.stringify(response.data));
           document.getElementById("signInDiv").hidden = true;
           event.target.reset();
-          setUserJwt(JSON.stringify(response.data));
+          setJwt(JSON.stringify(response.data));
           setLoading(false);
           navigate(-1);
         } else {
-          setLogged(false);
-          setAuth(false);
+          //setAuth(false);
           alert("incorect login");
         }
       })
@@ -149,7 +155,7 @@ const Login = () => {
           noValidate
           autoComplete="off"
         >
-          {logged === false && (
+          {!jwt && (
             <>
               <div id="email">
                 <TextField
@@ -174,7 +180,7 @@ const Login = () => {
           )}
         </Box>
         <Box component="span">
-          {logged === false && (
+          {!jwt && (
             <LoadingButton
               type="submit"
               size="small"
@@ -195,7 +201,7 @@ const Login = () => {
                 <h2>{userEmail.name}</h2>
               </div>
             )} */}
-            {logged === true && (
+            {jwt && (
               <Button
                 variant="contained"
                 style={{ marginBottom: "12px" }}

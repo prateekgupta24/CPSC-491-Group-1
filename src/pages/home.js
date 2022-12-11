@@ -28,7 +28,8 @@ import { authContext } from "../services/authContext";
 const Home = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
-  const { auth, setAuth } = useContext(authContext);
+  // const { auth, setAuth } = useContext(authContext);
+  const { jwt, setJwt } = useContext(authContext);
 
   const darkTheme = createTheme({
     palette: {
@@ -36,10 +37,11 @@ const Home = () => {
     },
   });
 
-  if (localStorage.getItem("auth") === "true") {
-    // localstorage sets boolean values as strings
-    setAuth(true);
-  }
+  // if (localStorage.getItem("auth") === "true") {
+  //   // localstorage sets boolean values as strings
+  //   setAuth(true);
+  // }
+
   const sendEmail = (event) => {
     event.preventDefault();
     setLoading(true);
@@ -64,12 +66,10 @@ const Home = () => {
   };
   return (
     <>
-      {auth ? (
+      {jwt ? (
         <NavBar className="NavBar" />
       ) : (
-        <NotAuthNB className="NonAuthNavbar">
-          <div>{auth}test</div>
-        </NotAuthNB>
+        <NotAuthNB className="NonAuthNavbar"></NotAuthNB>
       )}
       <HomeStyle id="home">
         <TitleStyle className="title">

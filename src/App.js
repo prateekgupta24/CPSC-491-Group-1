@@ -12,10 +12,10 @@ import YelperHome from "./pages/yelper";
 import YelperDetails from "./pages/yelperdetails";
 import { authContext } from "./services/authContext";
 function App() {
-  const [auth, setAuth] = useState(false);
+  const [jwt, setJwt] = useState(false);
   return (
     <Router>
-      <authContext.Provider value={{ auth, setAuth }}>
+      <authContext.Provider value={{ jwt, setJwt }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

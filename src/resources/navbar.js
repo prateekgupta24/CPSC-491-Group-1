@@ -6,10 +6,11 @@ import { authContext } from "../services/authContext";
 // import axios from "axios";
 
 const NavBar = () => {
-  const { auth, setAuth } = useContext(authContext);
-
+  // const { auth, setAuth } = useContext(authContext);
+  const { jwt, setJwt } = useContext(authContext);
   function handleLogOut() {
-    setAuth(false);
+    // setAuth(false);
+    setJwt("");
     localStorage.clear();
     // window.location.reload(); // refreshes page
   }
