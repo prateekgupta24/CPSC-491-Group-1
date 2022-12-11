@@ -35,14 +35,17 @@ db.mongoose
 
 // get mongodb id
 async function getParsedJwt(jwt) {
-  // debug jwt and get emailf
+  // debug jwt and get email
   console.log("in getParsedJwt");
-  console.log(jwt);
-  parsedJwt = JSON.parse(jwt);
-
-  console.log(parsedJwt);
-  const user = await db.userprofile.findOne({ email: parsedJwt.email });
-  console.log(user);
+  //console.log(jwt);
+  // parsedJwt = JSON.parse(jwt.accessToken);
+  parsedJwt = JSON.parse(
+    Buffer.from(jwt.accessToken.split(".")[1], "base64").toString()
+  );
+  //console.log(parsedJwt);
+  // const user = await db.userprofile.findOne({ email: parsedJwt.email });
+  // console.log(user);
+  console.log("out");
   return user;
 }
 
@@ -109,12 +112,11 @@ app.post("/login", async (req, res) => {
         res.json({ accessToken: accessToken });
       }
       if (!result) {
+        console.log("test");
         // if email doesn't exist, add to database
         const newUser = new db.userprofile(user);
         await newUser.save(); // saves to mongodb
         res.json(newUser);
-      } else {
-        res.json("");
       }
     });
   }
@@ -183,16 +185,15 @@ app.listen(PORT, () => {
 // matching algo?
 app.post("/match", async (req, res) => {
   console.log("in match");
-  console.log(req.body);
   // TODO:
   // get entire database
   // compare distance to user
   // grab a few users with closest distance
   const userID = await getParsedJwt(req.body);
 
-  db.userprofile.find({ _id: { $not: userID } }, function (err, result) {
-    if (err) throw err;
-    console.log(result);
-    res.json(result);
-  });
+  // db.userprofile.find({ _id: { $not: userID } }, function (err, result) {
+  //   if (err) throw err;
+  //   console.log(result);
+  //   res.json(result);
+  // });
 });
