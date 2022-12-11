@@ -71,20 +71,28 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   // check if email exists in database
   const user = req.body;
-  db.userprofile.findOne({ email: user.email }, function (err, result) {
-    if (err) throw err;
-    // console.log(result);
-    if (result) {
-      //console.log("exists");
-      const accessToken = jwt.sign(
-        user,
-        "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
-      );
-      res.json({ accessToken: accessToken });
-    } else {
-      res.json("");
-    }
-  });
+  if (!req.body.google) {
+    db.userprofile.findOne({ email: user.email }, function (err, result) {
+      if (err) throw err;
+      // console.log(result);
+      if (result) {
+        //console.log("exists");
+        const accessToken = jwt.sign(
+          user,
+          "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
+        );
+        res.json({ accessToken: accessToken });
+      } else {
+        res.json("");
+      }
+    });
+  } else if (req.body.google) {
+    const accessToken = jwt.sign(
+      user,
+      "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
+    );
+    res.json({ accessToken: accessToken });
+  }
 });
 
 // user profile settings
