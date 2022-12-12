@@ -1,6 +1,11 @@
 {
   "name": "491",
   "version": "0.1.0",
+  "engine": {
+    "node": "16.x",
+    "npm": "8.x",
+    "yarn": "1.x"
+  },
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.9.0",
@@ -41,10 +46,6 @@
     "build": "concurrently \"react-scripts build\" \"cd server && nodemon server\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-    "engine": {
-    "node": ">=16.17.0",
-    "npm": "<=8.15.0"
   },
   "eslintConfig": {
     "extends": [
