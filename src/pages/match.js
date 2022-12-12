@@ -23,8 +23,8 @@ const Match = () => {
       .catch((error) => {
         console.log(error);
         return;
-      }, []);
-  });
+      });
+  }, []);
 
   return (
     <div>
