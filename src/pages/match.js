@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Button from "@mui/material/Button";
-
 import Typography from "@mui/material/Typography";
 
 const Match = () => {
@@ -35,6 +34,10 @@ const Match = () => {
       });
   }, []);
 
+  const matchUser = (event) => {
+    console.log("matched user");
+    event.preventDefault();
+  };
   return (
     <div>
       <IconButton
@@ -60,11 +63,15 @@ const Match = () => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      {data.email}
+                      {data.email} <br />
                       {data.fname} {data.lname}
+                      <br />
                       {data.gender}
+                      <br />
                       {data.height} {data.weight}
+                      <br />
                       {data.gym}
+                      <br />
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -73,6 +80,7 @@ const Match = () => {
                       size="small"
                       type="submit"
                       name="match"
+                      onClick={matchUser}
                     >
                       Match
                     </Button>
@@ -83,7 +91,7 @@ const Match = () => {
           ))}
         </div>
       ) : (
-        <div>no matched users</div>
+        <div>no users matched</div>
       )}
     </div>
   );
