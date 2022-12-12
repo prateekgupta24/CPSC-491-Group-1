@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import MatchStyle from "../styles/match.style";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -39,7 +40,7 @@ const Match = () => {
     event.preventDefault();
   };
   return (
-    <div>
+    <MatchStyle>
       <IconButton
         onClick={() => {
           navigate(-1);
@@ -93,7 +94,7 @@ const Match = () => {
       ) : (
         <div>no users matched</div>
       )}
-    </div>
+    </MatchStyle>
   );
 };
 
