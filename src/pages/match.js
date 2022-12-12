@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Match = () => {
   const jwt = JSON.parse(localStorage.getItem("jwt"));
+  const [matchedUsers, setMatchedUsers] = useState({});
   console.log(jwt);
   // const data = {jwt: jwt.}
-  const test = () => {
+  useEffect(() => {
     axios
       .post("http://localhost:8080/match", jwt)
       .then((response) => {
@@ -13,6 +14,8 @@ const Match = () => {
 
         if (response.data) {
           console.log(response);
+          console.log(response.data);
+          setMatchedUsers(response.data);
         } else {
           console.log("not working");
         }
@@ -20,10 +23,15 @@ const Match = () => {
       .catch((error) => {
         console.log(error);
         return;
-      });
-  };
+      }, []);
+  });
 
-  return <button onClick={test}>in match</button>;
+  return (
+    <div>
+      <button>in match</button>
+      {matchedUsers ? <div>no matched users</div> : <div>{matchedUsers}</div>}
+    </div>
+  );
 };
 
 export default Match;
