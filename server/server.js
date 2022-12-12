@@ -198,6 +198,8 @@ app.post("/match", async (req, res) => {
   const userID = await getID(userEmail);
   const userMatch = await db.userprofile.find({ _id: { $ne: userID } });
   //console.log(userMatch);
+
+  // array of non sensitive information
   const validKeys = [
     "email",
     "fname",
@@ -207,19 +209,9 @@ app.post("/match", async (req, res) => {
     "weight",
     "gym",
   ];
-  // removes unnecessary/secret information
-  const newMatch = [{}];
-  //console.log(userMatch);
-  // for (const user in userMatch) {
-  //   for (const key of validKeys) {
-  //     //console.log(userMatch[user][key]);
-  //     if (userMatch[user][key]) {
-  //       console.log(newMatch[user][key]);
-  //       newMatch[user][key] = userMatch[user][key];
-  //     }
-  //   }
-  // }
 
+  const newMatch = [{}];
+  // fills and array of objects with other user's non sensitive information
   for (var i = 0; i < userMatch.length; i++) {
     for (const key of validKeys) {
       // console.log(user);
@@ -230,19 +222,19 @@ app.post("/match", async (req, res) => {
     }
     if (i + 1 !== userMatch.length) {
       const newObj = {};
-      newMatch.push(newObj);
+      newMatch.push(newObj); // jank way to push an empty object to an array
     }
   }
-  // console.log(newMatch);
   const userInfo = await db.userprofile.findOne({ email: userEmail });
   const userGym = userInfo.gym;
+  var userDistance = []; // list of user information in order of closest to furthest
+  // if user's location is in the database
   if (userGym) {
-    // if user's location is in the database
-    //console.log(userGym);
     // TODO:
-    // loop through userMatch.gym and calculate distance between userGym and userMatch.gym
+    // loop through newMatch's gyms and calculate distance between userGym and newMatch's gyms
     // return a list of all gyms in sorted order from closest to furthest
-    res.json(newMatch);
+    userDistance = newMatch; // change later when google maps api is added
+    res.json(userDistance);
   } else {
     res.json("input location");
   }
