@@ -43,7 +43,6 @@ async function getParsedJwt(token) {
 // get mongodb id from email
 async function getID(email) {
   const user = await db.userprofile.findOne({ email: email });
-  console.log(user);
   return user._id;
 }
 // simple route
@@ -198,14 +197,52 @@ app.post("/match", async (req, res) => {
   const userEmail = await getParsedJwt(req.body);
   const userID = await getID(userEmail);
   const userMatch = await db.userprofile.find({ _id: { $ne: userID } });
+  //console.log(userMatch);
+  const validKeys = [
+    "email",
+    "fname",
+    "lname",
+    "gender",
+    "height",
+    "weight",
+    "gym",
+  ];
+  // removes unnecessary/secret information
+  const newMatch = [{}];
+  //console.log(userMatch);
+  // for (const user in userMatch) {
+  //   for (const key of validKeys) {
+  //     //console.log(userMatch[user][key]);
+  //     if (userMatch[user][key]) {
+  //       console.log(newMatch[user][key]);
+  //       newMatch[user][key] = userMatch[user][key];
+  //     }
+  //   }
+  // }
+
+  for (var i = 0; i < userMatch.length; i++) {
+    for (const key of validKeys) {
+      // console.log(user);
+      // console.log(userMatch[i][key]);
+      if (userMatch[i][key]) {
+        newMatch[i][key] = userMatch[i][key];
+      }
+    }
+    if (i + 1 !== userMatch.length) {
+      const newObj = {};
+      newMatch.push(newObj);
+    }
+  }
+  // console.log(newMatch);
   const userInfo = await db.userprofile.findOne({ email: userEmail });
   const userGym = userInfo.gym;
   if (userGym) {
     // if user's location is in the database
-    console.log(userGym);
+    //console.log(userGym);
     // TODO:
     // loop through userMatch.gym and calculate distance between userGym and userMatch.gym
     // return a list of all gyms in sorted order from closest to furthest
+    res.json(newMatch);
   } else {
     res.json("input location");
   }
