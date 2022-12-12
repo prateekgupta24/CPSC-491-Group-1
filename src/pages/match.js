@@ -55,8 +55,8 @@ const Match = () => {
       </IconButton>
       {matchedUsers.length > 0 ? (
         <div>
-          {matchedUsers.map((data) => (
-            <Grid container direction="row">
+          <Grid container direction="row">
+            {matchedUsers.map((data) => (
               <Grid card>
                 <Card sx={{ maxWidth: 275, margin: "10px" }}>
                   <CardContent>
@@ -88,8 +88,8 @@ const Match = () => {
                   </CardActions>
                 </Card>
               </Grid>
-            </Grid>
-          ))}
+            ))}
+          </Grid>
         </div>
       ) : (
         <div>Loading</div>
