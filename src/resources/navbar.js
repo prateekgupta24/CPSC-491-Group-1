@@ -69,6 +69,12 @@ const NavBar = () => {
 
       <Navright>
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
+          <Link style={{ color: "black", textDecoration: "none" }} to="/match">
+            <Links>Match</Links>
+          </Link>
+        </Button>
+
+        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
           <Link
             style={{ color: "black", textDecoration: "none" }}
             to="/userprofile"
@@ -78,19 +84,7 @@ const NavBar = () => {
         </Button>
 
         <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
-          <Link
-            style={{ color: "black", textDecoration: "none" }}
-            to="/userpreferences"
-          >
-            <Links>Preferences</Links>
-          </Link>
-        </Button>
-
-        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
-          <Link
-            style={{ color: "black", textDecoration: "none" }}
-            to="/yelper"
-          >
+          <Link style={{ color: "black", textDecoration: "none" }} to="/yelper">
             <Links>Yelper</Links>
           </Link>
         </Button>
