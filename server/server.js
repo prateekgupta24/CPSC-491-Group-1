@@ -42,8 +42,9 @@ async function getParsedJwt(token) {
 
 // get mongodb id from email
 async function getID(email) {
-  const userID = await db.userprofile.findOne({ email: email });
-  return userID._id;
+  const user = await db.userprofile.findOne({ email: email });
+  console.log(user);
+  return user._id;
 }
 // simple route
 app.get("/", (req, res) => {
@@ -59,7 +60,7 @@ app.post("/signup", async (req, res) => {
     // console.log(result); // outputs result if exists
     if (result) {
       //console.log("exists");
-      const accessToken = jwt.sign(
+      const accessToken = await jwt.sign(
         result.email,
         "a47755667d1907f6e92e0de8b13e313232d23c791e8c3c7ffe1508942bdaeab6933d15c9eb8db75ccade9a18a2bbdd030b6cb0914cd1fbdd1c2bfffa9619ee09"
       );
@@ -180,8 +181,12 @@ app.put("/preferences", async (req, res) => {
 // require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
-app.listen(process.env.PORT || 8080, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+app.listen(process.env.PORT || 8080, function () {
+  console.log(
+    "Express server listening on port %d in %s mode",
+    this.address().port,
+    app.settings.env
+  );
 });
 
 // matching algo
