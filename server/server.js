@@ -236,7 +236,7 @@ app.post("/match", async (req, res) => {
     userDistance = newMatch; // change later when google maps api is added
     res.json(userDistance);
   } else {
-    res.json("input location");
+    res.json("");
   }
 
   // console.log(userMatch);
