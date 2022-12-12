@@ -12,11 +12,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const Match = () => {
-  const navigate = useNavigate();
-  const jwt = JSON.parse(localStorage.getItem("jwt"));
   const [matchedUsers, setMatchedUsers] = useState([]);
-  // const data = {jwt: jwt.}
+  const navigate = useNavigate();
+
   useEffect(() => {
+    const jwt = JSON.parse(localStorage.getItem("jwt"));
     axios
       .post("http://localhost:8080/match", jwt)
       .then((response) => {
@@ -25,8 +25,9 @@ const Match = () => {
         if (response.data) {
           console.log(response.data);
           setMatchedUsers(response.data);
+          console.log("working");
         } else {
-          console.log("not working");
+          alert("add a gym location to your profile");
         }
       })
       .catch((error) => {
@@ -54,10 +55,10 @@ const Match = () => {
       </IconButton>
       {matchedUsers.length > 0 ? (
         <div>
-          {matchedUsers.map((data) => (
-            <Grid container direction="row" id="prices">
+          <Grid container direction="row">
+            {matchedUsers.map((data) => (
               <Grid card>
-                <Card sx={{ maxWidth: 275, margin: "10px" }} id="1-month">
+                <Card sx={{ maxWidth: 275, margin: "10px" }}>
                   <CardContent>
                     <Typography
                       sx={{ fontSize: 14 }}
@@ -79,8 +80,7 @@ const Match = () => {
                     <Button
                       variant="contained"
                       size="small"
-                      type="submit"
-                      name="match"
+                      name="matchUser"
                       onClick={matchUser}
                     >
                       Match
@@ -88,11 +88,11 @@ const Match = () => {
                   </CardActions>
                 </Card>
               </Grid>
-            </Grid>
-          ))}
+            ))}
+          </Grid>
         </div>
       ) : (
-        <div>no users matched</div>
+        <div>Loading</div>
       )}
     </MatchStyle>
   );
