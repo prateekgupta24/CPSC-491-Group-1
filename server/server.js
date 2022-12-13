@@ -75,14 +75,6 @@ app.post("/signup", async (req, res) => {
     }
   });
 });
-// app.post("/logout", async (req, res) => {
-//   const user = req.body;
-//   req.body["email"] = "";
-//   req.body["pword"] = "";
-//   //console.log(user);
-
-//   res.json({ user });
-// });
 
 app.post("/login", async (req, res) => {
   // check if email exists in database
@@ -156,31 +148,31 @@ app.post("/userprofile", async (req, res) => {
 });
 require("./app/routes/user.routes")(app);
 
-app.put("/preferences", async (req, res) => {
-  // update the preferences
-  const preference = req.body;
-  const userEmail = await getParsedJwt(preference.jwt);
-  delete user.jwt;
-  const userID = await getID(userEmail);
-  delete preference.email;
-  //console.log(preferenceID);
-  // loop through each name and if key exists, update it.
-  for (const key in preference) {
-    if (!preference[key]) {
-      delete preference[key];
-    }
-  }
-  db.userprofile.updateOne(
-    { _id: userID },
-    { $set: preference },
-    function (err) {
-      if (err) throw err;
-      console.log("updated preference");
-    }
-  );
-  res.json(userprofile);
-});
-// require("./app/routes/preference.routes")(app);
+// app.put("/preferences", async (req, res) => {
+//   // update the preferences
+//   const preference = req.body;
+//   const userEmail = await getParsedJwt(preference.jwt);
+//   delete user.jwt;
+//   const userID = await getID(userEmail);
+//   delete preference.email;
+//   //console.log(preferenceID);
+//   // loop through each name and if key exists, update it.
+//   for (const key in preference) {
+//     if (!preference[key]) {
+//       delete preference[key];
+//     }
+//   }
+//   db.userprofile.updateOne(
+//     { _id: userID },
+//     { $set: preference },
+//     function (err) {
+//       if (err) throw err;
+//       console.log("updated preference");
+//     }
+//   );
+//   res.json(userprofile);
+// });
+// // require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
 app.listen(process.env.PORT || 8080, function () {
@@ -217,8 +209,6 @@ app.post("/match", async (req, res) => {
     const newObj = {};
     matchedUsers.push(newObj); // jank way to push an empty object to an array
     for (const key of validKeys) {
-      // console.log(user);
-      // console.log(userMatch[i][key]);
       if (userMatch[i][key] && userMatch[i]["gym"]) {
         matchedUsers[i][key] = userMatch[i][key];
       }
@@ -253,16 +243,13 @@ app.post("/match", async (req, res) => {
           timeout: 1000, // milliseconds
         })
         .then((r) => {
-          // console.log(r.data);
           // distance in meters
           const meters = r.data.rows[0].elements[0].distance.value;
           // converts meters to miles
           const miles = meters / 1609.344;
           // rounds to nearest decimal
           const roundedMiles = Math.round(miles * 10) / 10;
-          // console.log(miles);
           newMatch[i].distance = roundedMiles;
-          // console.log(newMatch[0]);
         })
         .catch((e) => {
           console.log(e);
@@ -279,8 +266,6 @@ app.post("/match", async (req, res) => {
       return 0;
     });
     console.log(newMatch);
-    // TODO:
-    // return a list of all gyms in sorted order from closest to furthest
     res.json(newMatch);
   } else {
     res.json("");
