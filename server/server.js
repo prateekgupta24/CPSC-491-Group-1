@@ -9,6 +9,8 @@ const ObjectID = require("mongodb").ObjectId;
 const { Client } = require("@googlemaps/google-maps-services-js");
 const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
+const PORT = process.env.PORT || 5000;
+
 app.use(cors());
 app.use(express.json());
 
@@ -179,12 +181,8 @@ require("./app/routes/user.routes")(app);
 // // require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
-app.listen(process.env.PORT || function () {
-  console.log(
-    "Express server listening on port %d in %s mode",
-    this.address().port,
-    app.settings.env
-  );
+app.listen(PORT, () => {
+  console.log(`server started on port ${PORT}`);
 });
 
 // matching algo
