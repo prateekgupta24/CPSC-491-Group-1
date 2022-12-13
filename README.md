@@ -1,5 +1,5 @@
 # Downloading the code
-- Clone the respository
+- Clone the respository by typing this command in the terminal
   - git clone https://github.com/prateekgupta24/CPSC-491-Group-1
 - Alternatively, download the zip.
   - go to https://github.com/prateekgupta24/CPSC-491-Group-1 on a web browser
