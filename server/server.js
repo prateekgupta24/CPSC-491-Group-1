@@ -265,7 +265,7 @@ app.post("/match", async (req, res) => {
       if (keyA > keyB) return 1;
       return 0;
     });
-    console.log(newMatch);
+    // console.log(newMatch);
     res.json(newMatch);
   } else {
     res.json("");
