@@ -191,8 +191,6 @@ app.listen(process.env.PORT || 8080, function () {
   );
 });
 
-const client = new Client({});
-
 // matching algo
 app.post("/match", async (req, res) => {
   // gets users email
@@ -236,15 +234,16 @@ app.post("/match", async (req, res) => {
   const newMatch = matchedUsers.filter(
     (value) => Object.keys(value).length !== 0
   );
-
+  // console.log(newMatch);
   // if user's location is in the database
   if (userGym) {
+    var i = 0;
     // gets distance of all gyms from the user's gym
     for (user of newMatch) {
       const matchGym = user.gym;
-      console.log(user);
+      // console.log(user);
       const client = new Client({});
-      client
+      await client
         .distancematrix({
           params: {
             origins: [userGym],
@@ -254,12 +253,32 @@ app.post("/match", async (req, res) => {
           timeout: 1000, // milliseconds
         })
         .then((r) => {
-          console.dir(r.data.rows, { depth: 5 });
+          // console.log(r.data);
+          // distance in meters
+          const meters = r.data.rows[0].elements[0].distance.value;
+          // converts meters to miles
+          const miles = meters / 1609.344;
+          // rounds to nearest decimal
+          const roundedMiles = Math.round(miles * 10) / 10;
+          // console.log(miles);
+          newMatch[i].distance = roundedMiles;
+          // console.log(newMatch[0]);
         })
         .catch((e) => {
           console.log(e);
         });
+      i++;
     }
+
+    newMatch.sort(function (a, b) {
+      var keyA = new Date(a.distance),
+        keyB = new Date(b.distance);
+      // Compare the 2 dates
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    });
+    console.log(newMatch);
     // TODO:
     // return a list of all gyms in sorted order from closest to furthest
     res.json(newMatch);
