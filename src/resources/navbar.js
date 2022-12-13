@@ -83,12 +83,6 @@ const NavBar = () => {
           </Link>
         </Button>
 
-        <Button variant="contained" style={{ padding: "0px", margin: "5px" }}>
-          <Link style={{ color: "black", textDecoration: "none" }} to="/yelper">
-            <Links>Yelper</Links>
-          </Link>
-        </Button>
-
         <Button
           variant="contained"
           style={{ padding: "0px", margin: "5px" }}
