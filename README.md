@@ -1,3 +1,12 @@
+# Downloading the code
+- Clone the respository
+  - git clone https://github.com/prateekgupta24/CPSC-491-Group-1
+- Alternatively, download the zip.
+  - go to https://github.com/prateekgupta24/CPSC-491-Group-1 on a web browser
+  - press the green button that says "Code"
+  - press download zip
+  - unzip the file
+  
 # Prerequisites
 - install node.js
   - https://nodejs.org/en/download/
