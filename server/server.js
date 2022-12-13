@@ -3,8 +3,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+var axios = require("axios");
 const ObjectID = require("mongodb").ObjectId;
 // const { Client } = require("@googlemaps/google-maps-services-js");
+const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
 app.use(cors());
 app.use(express.json());
@@ -214,6 +216,7 @@ app.post("/match", async (req, res) => {
   ];
 
   const newMatch = [];
+
   // fills and array of objects with other user's non sensitive information
   for (var i = 0; i < userMatch.length; i++) {
     const newObj = {};
@@ -228,9 +231,30 @@ app.post("/match", async (req, res) => {
   }
 
   const userInfo = await db.userprofile.findOne({ email: userEmail });
-  const userGym = userInfo.gym;
+  const userGym = encodeURIComponent(userInfo.gym);
+
   // jank way to get rid of empty object in array
   const newArr = newMatch.filter((value) => Object.keys(value).length !== 0);
+
+  const matchGym = "Los Angeles, CA, USA";
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${matchGym}&origins=${userGym}&units=imperial&key=${googleMapsKey}`;
+  console.log(url);
+  var config = {
+    method: "get",
+    url: url,
+    headers: { Accept: "application/json" },
+  };
+
+  axios(config)
+    .then(function (response) {
+      //console.log(response);
+      console.log(JSON.stringify(response.data));
+
+      // order list of matched users here
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   // if user's location is in the database
   //console.log(newMatch);
