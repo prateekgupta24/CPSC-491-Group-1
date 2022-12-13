@@ -1,6 +1,6 @@
 http://localhost:3000
 ### Test Homepage
-GET http://localhost:3000/
+GET https://maps.googleapis.com/maps/api/distancematrix/json?origins=Gold’s Gym La Mirada, South Beach Boulevard, La Mirada, CA, USA&destinations=New%20York%20City%2C%20NY&units=imperial&key=AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk
 
 ### Test Login
 POST http://localhost:8080/login
