@@ -11,6 +11,9 @@ const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
 const PORT = process.env.PORT || 5000;
 
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
+
 app.use(cors());
 app.use(express.json());
 
@@ -19,9 +22,6 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const buildPath = path.join(__dirname, '..', 'build');
-app.use(express.static(buildPath));
 
 const db = require("./app/models");
 const {
