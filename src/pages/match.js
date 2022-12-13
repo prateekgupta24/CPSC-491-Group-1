@@ -12,13 +12,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const Match = () => {
-  const [matchedUsers, setMatchedUsers] = useState([]);
   const [orderedMatch, setOrderedMatch] = useState([]);
+  const [match, setMatch] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [userAddress, setUserAddress] = useState("");
-  const [matchAddress, setMatchAddress] = useState("");
-  const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
   useEffect(() => {
     setLoading(true);
@@ -29,8 +26,7 @@ const Match = () => {
         //console.log(JSON.stringify(response.data));
 
         if (response.data) {
-          //console.log(response.data);
-          //setMatchedUsers(response.data);
+          console.log(response.data);
           setOrderedMatch(response.data); // remove later
           setLoading(false);
         } else {
@@ -41,35 +37,12 @@ const Match = () => {
         console.log(error);
         return;
       });
-    // const url = `https://maps.googleapis.com/maps/api/distancematrix/json
-    //   ?destinations=${matchAddress}
-    //   &origins=${userAddress}
-    //   &units=imperial
-    //   &key=${googleMapsKey}`;
-    // var config = {
-    //   method: "get",
-    //   url: url,
-    //   headers: {},
-    // };
-
-    // axios(config)
-    //   .then(function (response) {
-    //     console.log(JSON.stringify(response.data));
-
-    //     // order list of matched users here
-
-    //
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-
-    // add distance from users into each object
-    // reorder array of user objects in order of lowest distance
   }, []);
 
-  const matchUser = (event) => {
-    console.log("matched user");
+  const handleMatch = (event) => {
+    event.preventDefault();
+    console.log("matched");
+    console.log(event.target.id.value);
     event.preventDefault();
   };
 
@@ -86,43 +59,50 @@ const Match = () => {
       >
         <ArrowBackIosIcon />
       </IconButton>
-      <Grid container direction="row">
-        {orderedMatch.map((data) => {
-          return (
-            <Grid card>
-              <Card sx={{ maxWidth: 275, margin: "10px" }}>
-                <CardContent>
-                  <Typography
-                    sx={{ fontSize: 14 }}
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    {data.email} <br />
-                    {data.fname} {data.lname}
-                    <br />
-                    {data.gender}
-                    <br />
-                    {data.height} {data.weight}
-                    <br />
-                    {data.gym}
-                    <br />
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    name="matchUser"
-                    onClick={matchUser}
-                  >
-                    Match
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+      <form onSubmit={handleMatch}>
+        <Grid container direction="row">
+          {orderedMatch.map((data, index) => {
+            return (
+              <Grid card>
+                <Card sx={{ maxWidth: 275, margin: "10px" }} key={index}>
+                  <CardContent>
+                    <Typography
+                      sx={{ fontSize: 14 }}
+                      color="text.secondary"
+                      gutterBottom
+                      id={index}
+                    >
+                      {data.email} <br />
+                      {data.fname} {data.lname}
+                      <br />
+                      {data.gender}
+                      <br />
+                      {data.height} {data.weight}
+                      <br />
+                      {data.gym}
+                      <br />
+                      {data.distance}
+                      <br />
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      type="submit"
+                      name="handleMatch"
+                      // onClick={handleMatch}
+                      // onClick={() => setMatch({ index })}
+                    >
+                      Match
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </form>
     </MatchStyle>
   );
 };
