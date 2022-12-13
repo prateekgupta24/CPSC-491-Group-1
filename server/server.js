@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const ObjectID = require("mongodb").ObjectId;
+// const { Client } = require("@googlemaps/google-maps-services-js");
 
 app.use(cors());
 app.use(express.json());
@@ -188,6 +189,8 @@ app.listen(process.env.PORT || 8080, function () {
   );
 });
 
+// const client = new Client({});
+
 // matching algo
 app.post("/match", async (req, res) => {
   // TODO:
@@ -216,7 +219,7 @@ app.post("/match", async (req, res) => {
     for (const key of validKeys) {
       // console.log(user);
       // console.log(userMatch[i][key]);
-      if (userMatch[i][key]) {
+      if (userMatch[i][key] && userMatch[i]["gym"]) {
         newMatch[i][key] = userMatch[i][key];
       }
     }
@@ -227,14 +230,14 @@ app.post("/match", async (req, res) => {
   }
   const userInfo = await db.userprofile.findOne({ email: userEmail });
   const userGym = userInfo.gym;
-  var userDistance = []; // list of user information in order of closest to furthest
+
   // if user's location is in the database
+  console.log(newMatch);
   if (userGym) {
     // TODO:
     // loop through newMatch's gyms and calculate distance between userGym and newMatch's gyms
     // return a list of all gyms in sorted order from closest to furthest
-    userDistance = newMatch; // change later when google maps api is added
-    res.json(userDistance);
+    res.json(newMatch);
   } else {
     res.json("");
   }
