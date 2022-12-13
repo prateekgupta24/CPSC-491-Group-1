@@ -8,8 +8,6 @@ import Subscribe from "./pages/subscribe";
 import UserProfile from "./pages/userprofile";
 import Signup from "./pages/signup";
 import UserPreferences from "./pages/userpreferences";
-import YelperHome from "./pages/yelper";
-import YelperDetails from "./pages/yelperdetails";
 import { authContext } from "./services/authContext";
 import Match from "./pages/match";
 function App() {
@@ -24,8 +22,6 @@ function App() {
           <Route path="/subscribe" element={<Subscribe />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/userpreferences" element={<UserPreferences />} />
-          <Route path="/yelper" element={<YelperHome />} />
-          <Route path="/yelperdetails" element={<YelperDetails />} />
           <Route path="/match" element={<Match />} />
         </Routes>
       </authContext.Provider>
