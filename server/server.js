@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const path = require('path');
 var axios = require("axios");
 const ObjectID = require("mongodb").ObjectId;
 const { Client } = require("@googlemaps/google-maps-services-js");
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
 
 const db = require("./app/models");
 const {
