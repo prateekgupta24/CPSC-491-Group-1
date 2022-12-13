@@ -180,7 +180,7 @@ app.put("/preferences", async (req, res) => {
 // require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
-app.listen(process.env.PORT || 8080, function () {
+app.listen(process.env.PORT || function () {
   console.log(
     "Express server listening on port %d in %s mode",
     this.address().port,
