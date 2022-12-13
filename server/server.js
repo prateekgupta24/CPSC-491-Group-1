@@ -195,14 +195,12 @@ const client = new Client({});
 
 // matching algo
 app.post("/match", async (req, res) => {
-  // TODO:
-  // compare distance to user
-  // grab a few users with closest distance
-  // get user preferences ??
+  // gets users email
   const userEmail = await getParsedJwt(req.body);
+  // gets users id
   const userID = await getID(userEmail);
+  // gets an array of objects (users) that isn't the user
   const userMatch = await db.userprofile.find({ _id: { $ne: userID } });
-  //console.log(userMatch);
 
   // array of non sensitive information
   const validKeys = [
@@ -215,102 +213,57 @@ app.post("/match", async (req, res) => {
     "gym",
   ];
 
-  const newMatch = [];
-
+  const matchedUsers = [];
   // fills and array of objects with other user's non sensitive information
   for (var i = 0; i < userMatch.length; i++) {
     const newObj = {};
-    newMatch.push(newObj); // jank way to push an empty object to an array
+    matchedUsers.push(newObj); // jank way to push an empty object to an array
     for (const key of validKeys) {
       // console.log(user);
       // console.log(userMatch[i][key]);
       if (userMatch[i][key] && userMatch[i]["gym"]) {
-        newMatch[i][key] = userMatch[i][key];
+        matchedUsers[i][key] = userMatch[i][key];
       }
     }
   }
 
+  // all of current user's information
   const userInfo = await db.userprofile.findOne({ email: userEmail });
+  // user's gym location
   const userGym = userInfo.gym;
 
   // jank way to get rid of empty object in array
-  const newArr = newMatch.filter((value) => Object.keys(value).length !== 0);
-
-  const matchGym = "Los Angeles, CA, USA";
-  // const service = new google.maps.DistanceMatrixService();
-  const request = {
-    origins: userGym,
-    destinations: matchGym,
-    travelMode: "DRIVING",
-    unitSystem: "METRIC",
-    avoidHighways: false,
-    avoidTolls: false,
-  };
-  const client = new Client({});
-  client
-    .distancematrix({
-      params: {
-        origins: [userGym],
-        destinations: [matchGym],
-        travelMode: "DRIVING",
-        key: googleMapsKey,
-      },
-      timeout: 1000, // milliseconds
-    })
-    .then((r) => {
-      console.dir(r.data.rows, { depth: 5 });
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  // client
-  //   .distancematrix({
-  //     params: {
-  //       origins: userGym,
-  //       destinations: matchGym,
-  //       key: googleMapsKey,
-  //     },
-  //   })
-  //   .then((response) => {
-  //     console.log(response);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // const url = `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${matchGym}&origins=${userGym}&units=imperial&key=${googleMapsKey}`;
-  // // console.log(url);
-  // var config = {
-  //   method: "get",
-  //   url: url,
-  //   headers: { "Content-Encoding": "gzip" },
-  //   decompress: true,
-  // };
-
-  // // axios(config)
-  // axios
-  //   .get(url, { responseType: "arraybuffer" })
-  //   .then(function (response) {
-  //     // console.log(response.data);
-
-  //     console.log(JSON.stringify(response.data));
-
-  //     // order list of matched users here
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
+  const newMatch = matchedUsers.filter(
+    (value) => Object.keys(value).length !== 0
+  );
 
   // if user's location is in the database
-  //console.log(newMatch);
   if (userGym) {
+    // gets distance of all gyms from the user's gym
+    for (user of newMatch) {
+      const matchGym = user.gym;
+      console.log(user);
+      const client = new Client({});
+      client
+        .distancematrix({
+          params: {
+            origins: [userGym],
+            destinations: [matchGym],
+            key: googleMapsKey,
+          },
+          timeout: 1000, // milliseconds
+        })
+        .then((r) => {
+          console.dir(r.data.rows, { depth: 5 });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
     // TODO:
-    // loop through newMatch's gyms and calculate distance between userGym and newMatch's gyms
     // return a list of all gyms in sorted order from closest to furthest
-    res.json(newArr);
+    res.json(newMatch);
   } else {
     res.json("");
   }
-
-  // console.log(userMatch);
-  // find distance between user and everone in userMatch
 });
