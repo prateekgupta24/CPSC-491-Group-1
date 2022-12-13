@@ -213,9 +213,11 @@ app.post("/match", async (req, res) => {
     "gym",
   ];
 
-  const newMatch = [{}];
+  const newMatch = [];
   // fills and array of objects with other user's non sensitive information
   for (var i = 0; i < userMatch.length; i++) {
+    const newObj = {};
+    newMatch.push(newObj); // jank way to push an empty object to an array
     for (const key of validKeys) {
       // console.log(user);
       // console.log(userMatch[i][key]);
@@ -223,21 +225,20 @@ app.post("/match", async (req, res) => {
         newMatch[i][key] = userMatch[i][key];
       }
     }
-    if (i + 1 !== userMatch.length) {
-      const newObj = {};
-      newMatch.push(newObj); // jank way to push an empty object to an array
-    }
   }
+
   const userInfo = await db.userprofile.findOne({ email: userEmail });
   const userGym = userInfo.gym;
+  // jank way to get rid of empty object in array
+  const newArr = newMatch.filter((value) => Object.keys(value).length !== 0);
 
   // if user's location is in the database
-  console.log(newMatch);
+  //console.log(newMatch);
   if (userGym) {
     // TODO:
     // loop through newMatch's gyms and calculate distance between userGym and newMatch's gyms
     // return a list of all gyms in sorted order from closest to furthest
-    res.json(newMatch);
+    res.json(newArr);
   } else {
     res.json("");
   }
