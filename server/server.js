@@ -5,7 +5,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 var axios = require("axios");
 const ObjectID = require("mongodb").ObjectId;
-// const { Client } = require("@googlemaps/google-maps-services-js");
+const { Client } = require("@googlemaps/google-maps-services-js");
 const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
 app.use(cors());
@@ -191,7 +191,7 @@ app.listen(process.env.PORT || 8080, function () {
   );
 });
 
-// const client = new Client({});
+const client = new Client({});
 
 // matching algo
 app.post("/match", async (req, res) => {
@@ -231,30 +231,74 @@ app.post("/match", async (req, res) => {
   }
 
   const userInfo = await db.userprofile.findOne({ email: userEmail });
-  const userGym = encodeURIComponent(userInfo.gym);
+  const userGym = userInfo.gym;
 
   // jank way to get rid of empty object in array
   const newArr = newMatch.filter((value) => Object.keys(value).length !== 0);
 
   const matchGym = "Los Angeles, CA, USA";
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${matchGym}&origins=${userGym}&units=imperial&key=${googleMapsKey}`;
-  console.log(url);
-  var config = {
-    method: "get",
-    url: url,
-    headers: { Accept: "application/json" },
+  // const service = new google.maps.DistanceMatrixService();
+  const request = {
+    origins: userGym,
+    destinations: matchGym,
+    travelMode: "DRIVING",
+    unitSystem: "METRIC",
+    avoidHighways: false,
+    avoidTolls: false,
   };
-
-  axios(config)
-    .then(function (response) {
-      //console.log(response);
-      console.log(JSON.stringify(response.data));
-
-      // order list of matched users here
+  const client = new Client({});
+  client
+    .distancematrix({
+      params: {
+        origins: [userGym],
+        destinations: [matchGym],
+        travelMode: "DRIVING",
+        key: googleMapsKey,
+      },
+      timeout: 1000, // milliseconds
     })
-    .catch(function (error) {
-      console.log(error);
+    .then((r) => {
+      console.dir(r.data.rows, { depth: 5 });
+    })
+    .catch((e) => {
+      console.log(e);
     });
+  // client
+  //   .distancematrix({
+  //     params: {
+  //       origins: userGym,
+  //       destinations: matchGym,
+  //       key: googleMapsKey,
+  //     },
+  //   })
+  //   .then((response) => {
+  //     console.log(response);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // const url = `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${matchGym}&origins=${userGym}&units=imperial&key=${googleMapsKey}`;
+  // // console.log(url);
+  // var config = {
+  //   method: "get",
+  //   url: url,
+  //   headers: { "Content-Encoding": "gzip" },
+  //   decompress: true,
+  // };
+
+  // // axios(config)
+  // axios
+  //   .get(url, { responseType: "arraybuffer" })
+  //   .then(function (response) {
+  //     // console.log(response.data);
+
+  //     console.log(JSON.stringify(response.data));
+
+  //     // order list of matched users here
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
 
   // if user's location is in the database
   //console.log(newMatch);
