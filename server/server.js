@@ -3,7 +3,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+var axios = require("axios");
 const ObjectID = require("mongodb").ObjectId;
+const { Client } = require("@googlemaps/google-maps-services-js");
+const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
 app.use(cors());
 app.use(express.json());
@@ -72,14 +75,6 @@ app.post("/signup", async (req, res) => {
     }
   });
 });
-// app.post("/logout", async (req, res) => {
-//   const user = req.body;
-//   req.body["email"] = "";
-//   req.body["pword"] = "";
-//   //console.log(user);
-
-//   res.json({ user });
-// });
 
 app.post("/login", async (req, res) => {
   // check if email exists in database
@@ -153,31 +148,31 @@ app.post("/userprofile", async (req, res) => {
 });
 require("./app/routes/user.routes")(app);
 
-app.put("/preferences", async (req, res) => {
-  // update the preferences
-  const preference = req.body;
-  const userEmail = await getParsedJwt(preference.jwt);
-  delete user.jwt;
-  const userID = await getID(userEmail);
-  delete preference.email;
-  //console.log(preferenceID);
-  // loop through each name and if key exists, update it.
-  for (const key in preference) {
-    if (!preference[key]) {
-      delete preference[key];
-    }
-  }
-  db.userprofile.updateOne(
-    { _id: userID },
-    { $set: preference },
-    function (err) {
-      if (err) throw err;
-      console.log("updated preference");
-    }
-  );
-  res.json(userprofile);
-});
-// require("./app/routes/preference.routes")(app);
+// app.put("/preferences", async (req, res) => {
+//   // update the preferences
+//   const preference = req.body;
+//   const userEmail = await getParsedJwt(preference.jwt);
+//   delete user.jwt;
+//   const userID = await getID(userEmail);
+//   delete preference.email;
+//   //console.log(preferenceID);
+//   // loop through each name and if key exists, update it.
+//   for (const key in preference) {
+//     if (!preference[key]) {
+//       delete preference[key];
+//     }
+//   }
+//   db.userprofile.updateOne(
+//     { _id: userID },
+//     { $set: preference },
+//     function (err) {
+//       if (err) throw err;
+//       console.log("updated preference");
+//     }
+//   );
+//   res.json(userprofile);
+// });
+// // require("./app/routes/preference.routes")(app);
 
 // set port, listen for requests
 app.listen(process.env.PORT || function () {
@@ -190,14 +185,12 @@ app.listen(process.env.PORT || function () {
 
 // matching algo
 app.post("/match", async (req, res) => {
-  // TODO:
-  // compare distance to user
-  // grab a few users with closest distance
-  // get user preferences ??
+  // gets users email
   const userEmail = await getParsedJwt(req.body);
+  // gets users id
   const userID = await getID(userEmail);
+  // gets an array of objects (users) that isn't the user
   const userMatch = await db.userprofile.find({ _id: { $ne: userID } });
-  //console.log(userMatch);
 
   // array of non sensitive information
   const validKeys = [
@@ -210,35 +203,71 @@ app.post("/match", async (req, res) => {
     "gym",
   ];
 
-  const newMatch = [{}];
+  const matchedUsers = [];
   // fills and array of objects with other user's non sensitive information
   for (var i = 0; i < userMatch.length; i++) {
+    const newObj = {};
+    matchedUsers.push(newObj); // jank way to push an empty object to an array
     for (const key of validKeys) {
-      // console.log(user);
-      // console.log(userMatch[i][key]);
-      if (userMatch[i][key]) {
-        newMatch[i][key] = userMatch[i][key];
+      if (userMatch[i][key] && userMatch[i]["gym"]) {
+        matchedUsers[i][key] = userMatch[i][key];
       }
     }
-    if (i + 1 !== userMatch.length) {
-      const newObj = {};
-      newMatch.push(newObj); // jank way to push an empty object to an array
-    }
   }
+
+  // all of current user's information
   const userInfo = await db.userprofile.findOne({ email: userEmail });
+  // user's gym location
   const userGym = userInfo.gym;
-  var userDistance = []; // list of user information in order of closest to furthest
+
+  // jank way to get rid of empty object in array
+  const newMatch = matchedUsers.filter(
+    (value) => Object.keys(value).length !== 0
+  );
+  // console.log(newMatch);
   // if user's location is in the database
   if (userGym) {
-    // TODO:
-    // loop through newMatch's gyms and calculate distance between userGym and newMatch's gyms
-    // return a list of all gyms in sorted order from closest to furthest
-    userDistance = newMatch; // change later when google maps api is added
-    res.json(userDistance);
+    var i = 0;
+    // gets distance of all gyms from the user's gym
+    for (user of newMatch) {
+      const matchGym = user.gym;
+      // console.log(user);
+      const client = new Client({});
+      await client
+        .distancematrix({
+          params: {
+            origins: [userGym],
+            destinations: [matchGym],
+            key: googleMapsKey,
+          },
+          timeout: 1000, // milliseconds
+        })
+        .then((r) => {
+          // distance in meters
+          const meters = r.data.rows[0].elements[0].distance.value;
+          // converts meters to miles
+          const miles = meters / 1609.344;
+          // rounds to nearest decimal
+          const roundedMiles = Math.round(miles * 10) / 10;
+          newMatch[i].distance = roundedMiles;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      i++;
+    }
+
+    newMatch.sort(function (a, b) {
+      var keyA = new Date(a.distance),
+        keyB = new Date(b.distance);
+      // Compare the 2 dates
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    });
+    // console.log(newMatch);
+    res.json(newMatch);
   } else {
     res.json("");
   }
-
-  // console.log(userMatch);
-  // find distance between user and everone in userMatch
 });

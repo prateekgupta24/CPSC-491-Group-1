@@ -12,10 +12,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const Match = () => {
-  const [matchedUsers, setMatchedUsers] = useState([]);
+  const [orderedMatch, setOrderedMatch] = useState([]);
+  const [match, setMatch] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     const jwt = JSON.parse(localStorage.getItem("jwt"));
     axios
       .post("http://localhost:8080/match", jwt)
@@ -24,8 +27,8 @@ const Match = () => {
 
         if (response.data) {
           console.log(response.data);
-          setMatchedUsers(response.data);
-          console.log("working");
+          setOrderedMatch(response.data); // remove later
+          setLoading(false);
         } else {
           alert("add a gym location to your profile");
         }
@@ -36,10 +39,13 @@ const Match = () => {
       });
   }, []);
 
-  const matchUser = (event) => {
-    console.log("matched user");
+  const handleMatch = (event) => {
+    event.preventDefault();
+    console.log("matched");
+    console.log(event.target.id.value);
     event.preventDefault();
   };
+
   return (
     <MatchStyle>
       <IconButton
@@ -53,17 +59,18 @@ const Match = () => {
       >
         <ArrowBackIosIcon />
       </IconButton>
-      {matchedUsers.length > 0 ? (
-        <div>
-          <Grid container direction="row">
-            {matchedUsers.map((data) => (
+      <form onSubmit={handleMatch}>
+        <Grid container direction="row">
+          {orderedMatch.map((data, index) => {
+            return (
               <Grid card>
-                <Card sx={{ maxWidth: 275, margin: "10px" }}>
+                <Card sx={{ maxWidth: 275, margin: "10px" }} key={index}>
                   <CardContent>
                     <Typography
                       sx={{ fontSize: 14 }}
                       color="text.secondary"
                       gutterBottom
+                      id={index}
                     >
                       {data.email} <br />
                       {data.fname} {data.lname}
@@ -74,28 +81,79 @@ const Match = () => {
                       <br />
                       {data.gym}
                       <br />
+                      {data.distance}
+                      <br />
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button
                       variant="contained"
                       size="small"
-                      name="matchUser"
-                      onClick={matchUser}
+                      type="submit"
+                      name="handleMatch"
+                      // onClick={handleMatch}
+                      // onClick={() => setMatch({ index })}
                     >
                       Match
                     </Button>
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
-          </Grid>
-        </div>
-      ) : (
-        <div>Loading</div>
-      )}
+            );
+          })}
+        </Grid>
+      </form>
     </MatchStyle>
   );
 };
-
 export default Match;
+{
+  /* 
+  <MatchStyle>
+              <IconButton
+                onClick={() => {
+                  navigate(-1);
+                }}
+                color="primary"
+                aria-label="back"
+                component="label"
+                style={{ justifyContent: "flex-start" }}
+              >
+                <ArrowBackIosIcon />
+              </IconButton>
+
+              <Grid container direction="row">
+                <Grid card>
+                  <Card sx={{ maxWidth: 275, margin: "10px" }}>
+                    <CardContent>
+                      <Typography
+                        sx={{ fontSize: 14 }}
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        {data.email} <br />
+                        {data.fname} {data.lname}
+                        <br />
+                        {data.gender}
+                        <br />
+                        {data.height} {data.weight}
+                        <br />
+                        {data.gym}
+                        <br />
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        name="matchUser"
+                        onClick={matchUser}
+                      >
+                        Match
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              </Grid>
+            </MatchStyle> */
+}
