@@ -10,11 +10,9 @@ const ObjectID = require("mongodb").ObjectId;
 const { Client } = require("@googlemaps/google-maps-services-js");
 const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
-const PORT = process.env.PORT || 8080;
-
-app.use(express.static(path.resolve(__dirname, '/build')));
-
-route(app);
+const PORT = process.env.PORT || 5000
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
 
 app.use(cors());
 app.use(express.json());
