@@ -45,7 +45,7 @@
   },
   "scripts": {
     "start-client": "react-scripts start",
-    "build": "concurrently \"react-scripts start\" \"cd server && node server\"",
+    "build": "concurrently \"react-scripts build\" \"cd server && node server\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start": "cd server && yarn start"
