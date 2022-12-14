@@ -4,15 +4,17 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const path = require('path');
+const route = require("./app/routes/route.js")
 var axios = require("axios");
 const ObjectID = require("mongodb").ObjectId;
 const { Client } = require("@googlemaps/google-maps-services-js");
 const googleMapsKey = "AIzaSyAuiHqFBBIAHGvYnuBMbAAZRhs76V4ncrk";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
-const buildPath = path.join(__dirname, '..', 'build');
-app.use(express.static(buildPath));
+app.use(express.static(path.resolve(__dirname, '/build')));
+
+route(app);
 
 app.use(cors());
 app.use(express.json());
