@@ -182,10 +182,7 @@ require("./app/routes/user.routes")(app);
 
 // set port, listen for requests
 app.listen(PORT || function () {
-  console.log(
-    "Express server listening on port %d in %s mode",
-    this.address().port,
-    app.settings.env
+    console.log(`server started on port ${PORT}`);
   );
 });
 
